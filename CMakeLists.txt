@@ -1,43 +1,42 @@
-cmake_minimum_required(VERSION 3.13)
-project(Hashes)
+cmake_minimum_required(VERSION 3.4)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED TRUE)
 set(CMAKE_C_EXTENSIONS OFF)
 
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE "Debug")
-endif()
+project(DataStructures)
+add_library(DataStructures
+    "src/BaseOpenHashTable.c"
+    "src/BaseVector.c"
+)
+target_include_directories(DataStructures 
+    PUBLIC
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/DataStructures>"
+    "$<INSTALL_INTERFACE:include>"
+)
 
-set(GNU_C_WARNINGS "-Wall -Wextra -Wshadow -Wdouble-promotion -Wrestrict -Wconversion -Wsign-conversion -Wpedantic -Wjump-misses-init")
-set(GNU_FLAGS_DEBUG "-ggdb3")
-if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
-    set(GNU_FLAGS_DEBUG "${GNU_FLAGS_DEBUG} -fsanitize=address -fsanitize=undefined")
-endif()
-set(GNU_FLAGS_RELEASE "-O3 -DNDEBUG")
-set(GNU_C_FLAGS_DEBUG "${GNU_C_WARNINGS} ${GNU_FLAGS_DEBUG}")
-set(GNU_C_FLAGS_RELEASE "${GNU_C_WARNINGS} ${GNU_FLAGS_RELEASE}")
+install(
+    TARGETS DataStructures
+    EXPORT DataStructuresTargets
+    LIBRARY DESTINATION "lib"
+    ARCHIVE DESTINATION "lib"
+    RUNTIME DESTINATION "bin"
+    INCLUDES DESTINATION "include"
+)
 
-set(CLANG_C_WARNINGS "-Wall -Wextra -Wshadow -Wdouble-promotion -Wconversion -Wsign-conversion -Wpedantic")
-set(CLANG_FLAGS_DEBUG "-ggdb3")
-if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
-    set(CLANG_FLAGS_DEBUG "${CLANG_FLAGS_DEBUG} -fsanitize=address -fsanitize=undefined")
-endif()
-set(CLANG_FLAGS_RELEASE "-O3 -DNDEBUG")
-set(CLANG_C_FLAGS_DEBUG "${CLANG_C_WARNINGS} ${CLANG_FLAGS_DEBUG}")
-set(CLANG_C_FLAGS_RELEASE "${CLANG_C_WARNINGS} ${CLANG_FLAGS_RELEASE}")
+install(
+    FILES
+    "include/DataStructures/BaseOpenHashTable.h"
+    "include/DataStructures/BaseVector.h"
+    "include/DataStructures/OpenHashTable.h"
+    "include/DataStructures/Vector.h"
+    DESTINATION "include/DataStructures"
+)
 
-if (${CMAKE_C_COMPILER_ID} STREQUAL "GNU")
-    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} ${GNU_C_FLAGS_DEBUG}")
-    set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} ${GNU_C_FLAGS_RELEASE}")
-elseif(${CMAKE_C_COMPILER_ID} STREQUAL "Clang")
-    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} ${CLANG_C_FLAGS_DEBUG}")
-    set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} ${CLANG_C_FLAGS_RELEASE}")
-endif()
+install(
+    EXPORT DataStructuresTargets
+    FILE DataStructuresTargets.cmake
+    NAMESPACE DataStructures::
+    DESTINATION "lib/cmake/DataStructures"
+)
 
-project(ChainHashTable)
-add_library(ChainHashTable SHARED "ChainHashTable.c")
-target_sources(ChainHashTable PUBLIC "ChainHashTable.h")
-project(hwh)
-add_executable(hwh "hwh.c")
-target_link_libraries(hwh ChainHashTable)
