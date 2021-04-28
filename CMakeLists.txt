@@ -10,18 +10,16 @@ add_library(DataStructures
     "src/BaseVector.c"
 )
 target_include_directories(DataStructures 
-    PUBLIC
-    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/DataStructures>"
+    INTERFACE
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
     "$<INSTALL_INTERFACE:include>"
+    PRIVATE
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/DataStructures>"
 )
 
 install(
     TARGETS DataStructures
     EXPORT DataStructuresTargets
-    LIBRARY DESTINATION "lib"
-    ARCHIVE DESTINATION "lib"
-    RUNTIME DESTINATION "bin"
-    INCLUDES DESTINATION "include"
 )
 
 install(
@@ -30,7 +28,8 @@ install(
     "include/DataStructures/BaseVector.h"
     "include/DataStructures/OpenHashTable.h"
     "include/DataStructures/Vector.h"
-    DESTINATION "include/DataStructures"
+    DESTINATION
+    "include/DataStructures"
 )
 
 install(
@@ -39,4 +38,6 @@ install(
     NAMESPACE DataStructures::
     DESTINATION "lib/cmake/DataStructures"
 )
+
+add_library(DataStructures::DataStructures ALIAS DataStructures)
 
