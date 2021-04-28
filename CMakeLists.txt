@@ -8,6 +8,8 @@ project(DataStructures)
 add_library(DataStructures
     "src/BaseOpenHashTable.c"
     "src/BaseVector.c"
+    "src/list.c"
+    "src/clist.c"
 )
 target_include_directories(DataStructures 
     INTERFACE
@@ -28,6 +30,8 @@ install(
     "include/DataStructures/BaseVector.h"
     "include/DataStructures/OpenHashTable.h"
     "include/DataStructures/Vector.h"
+    "include/DataStructures/list.h"
+    "include/DataStructures/clist.h"
     DESTINATION
     "include/DataStructures"
 )
