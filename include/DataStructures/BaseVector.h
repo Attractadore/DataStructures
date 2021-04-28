@@ -13,5 +13,6 @@ bool baseVectorPushBack(BaseVector* vector, void const* elem_ptr);
 void* baseVectorData(BaseVector* vector);
 void const* baseVectorConstData(BaseVector const* vector);
 void* baseVectorDisown(BaseVector* vector, size_t* size_ptr, size_t* capacity_ptr);
+void baseVectorClear(BaseVector* vector);
 
 size_t baseVectorGetSize(BaseVector const* vector);

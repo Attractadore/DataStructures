@@ -43,6 +43,10 @@ static inline VECTOR_TYPE* VECTOR_LOWER_IDENTIFIER(Disown)(VECTOR_NAME* const ve
     return baseVectorDisown((BaseVector*) vector, size_ptr, capacity_ptr);
 }
 
+static inline void VECTOR_LOWER_IDENTIFIER(Clear)(VECTOR_NAME* const vector) {
+    baseVectorClear((BaseVector*) vector);
+}
+
 static inline size_t VECTOR_LOWER_IDENTIFIER(GetSize)(VECTOR_NAME const* const vector) {
     return baseVectorGetSize((BaseVector*) vector);
 }

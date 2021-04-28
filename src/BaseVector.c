@@ -98,3 +98,9 @@ size_t baseVectorGetSize(BaseVector const* const vector) {
 
     return vector->size;
 }
+
+void baseVectorClear(BaseVector* const vector) {
+    assert(vector);
+
+    vector->size = 0;
+}
