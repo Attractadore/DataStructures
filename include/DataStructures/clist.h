@@ -14,11 +14,11 @@ struct cycle_t {
 	int* data;
 };
 // start == newest_one, start->prev = last one
-void ñmake_list(struct cycle_t* start);
-void ñfree_list(struct cycle_t* cur, struct cycle_t* start);
-// ñinsert_in_front - returns new position of start, src - source of data
-struct cycle_t* ñinsert_in_front(struct cycle_t* start, const void* src);
-// ñmove_forward - moves found element to the start, returns new position of start
-struct cycle_t* ñmove_forward(struct cycle_t* cur, struct cycle_t* start);
+void cmake_list(struct cycle_t* start);
+void cfree_list(struct cycle_t* cur, struct cycle_t* start);
+// cinsert_in_front - returns new position of start, src - source of data
+struct cycle_t* cinsert_in_front(struct cycle_t* start, const void* src);
+// cmove_forward - moves found element to the start, returns new position of start
+struct cycle_t* cmove_forward(struct cycle_t* cur, struct cycle_t* start);
 
-void ñshow_list(struct cycle_t* start); // needs data-type function in arguments
+void cshow_list(struct cycle_t* start); // needs data-type function in arguments
