@@ -4,7 +4,6 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED TRUE)
 set(CMAKE_C_EXTENSIONS OFF)
 
-project(DataStructures)
 add_library(DataStructures
     "src/BaseOpenHashTable.c"
     "src/BaseVector.c"
