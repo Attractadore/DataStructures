@@ -2,13 +2,13 @@
 #include "clist.h"
 
 // remove_from_end - removes last used element from the cash
-void remove_from_end(struct cycle_t* start);
+void сremove_from_end(struct cycle_t* start);
 
-struct cycle_t* insert_in_front(struct cycle_t* start, const void* src) // need optimization
+struct cycle_t* сinsert_in_front(struct cycle_t* start, const void* src) // need optimization
 {
 	assert(start);
 	while(cur_size + sizeof((char*)src) > MAX_CASH_SZ) {
-		remove_from_end(start);
+		сremove_from_end(start);
 	}
 	start->prev->next = calloc(1, sizeof(struct cycle_t));
 	start->prev->next->data = calloc(1, sizeof((char*)src));
@@ -21,7 +21,7 @@ struct cycle_t* insert_in_front(struct cycle_t* start, const void* src) // need 
 	return start->prev;
 }
 
-void remove_from_end(struct cycle_t* start)//done
+void сremove_from_end(struct cycle_t* start)//done
 {
 	assert(start);
 	start = start->prev;
@@ -33,7 +33,7 @@ void remove_from_end(struct cycle_t* start)//done
 	free(start);
 }
 
-struct cycle_t* move_forward(struct cycle_t* cur, struct cycle_t* start)//done
+struct cycle_t* сmove_forward(struct cycle_t* cur, struct cycle_t* start)//done
 {
 	assert(start);
 	assert(cur);
@@ -49,7 +49,7 @@ struct cycle_t* move_forward(struct cycle_t* cur, struct cycle_t* start)//done
 	return cur;
 }
 
-void show_list(struct cycle_t* start)// for int only, not tested yet
+void сshow_list(struct cycle_t* start)// for int only, not tested yet
 {
 	printf("%d ", *(start->data));
 	if(start->next != NULL) {
@@ -59,7 +59,7 @@ void show_list(struct cycle_t* start)// for int only, not tested yet
 		printf("\n");
 }
 
-void free_list(struct cycle_t* cur, struct cycle_t* start)//done
+void сfree_list(struct cycle_t* cur, struct cycle_t* start)//done
 {
 	assert(cur);
 
