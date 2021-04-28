@@ -7,8 +7,8 @@ set(CMAKE_C_EXTENSIONS OFF)
 add_library(DataStructures
     "src/BaseOpenHashTable.c"
     "src/BaseVector.c"
-    "src/list.c"
-    "src/clist.c"
+#    "src/list.c"
+#    "src/clist.c"
 )
 target_include_directories(DataStructures 
     INTERFACE
