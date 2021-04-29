@@ -1,5 +1,3 @@
-#define CACHE_POLICY_TYPE char const*
-#define CACHE_POLICY_TYPE_NAME ConstCharPtr
 #ifndef CACHE_POLICY_TYPE
 #error Define the type to use as CACHE_POLICY_TYPE
 #endif
