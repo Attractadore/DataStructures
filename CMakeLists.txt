@@ -8,6 +8,7 @@ add_library(DataStructures
     "src/BaseOpenHashTable.c"
     "src/BaseVector.c"
     "src/BaseCachePolicy.c"
+    "src/DummyCache.c"
 #    "src/list.c"
 #    "src/clist.c"
 )
