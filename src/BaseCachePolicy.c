@@ -16,7 +16,7 @@ struct BaseCachePolicy_T {
     BaseCacheFreeFunc free_func;
 };
 
-BaseCachePolicy* baseBaseCachePolicyAlloc(const size_t capacity, const size_t key_size, char const* algorithm) {
+BaseCachePolicy* baseCachePolicyAlloc(const size_t capacity, const size_t key_size, char const* algorithm) {
     assert(capacity && algorithm);
 
     BaseCachePolicy* const cache_policy = calloc(1, sizeof(*cache_policy));
@@ -42,7 +42,7 @@ BaseCachePolicy* baseBaseCachePolicyAlloc(const size_t capacity, const size_t ke
     return cache_policy;
 }
 
-void baseBaseCachePolicyFree(BaseCachePolicy* const cache_policy) {
+void baseCachePolicyFree(BaseCachePolicy* const cache_policy) {
     if (!cache_policy) {
         return;
     }
@@ -51,13 +51,13 @@ void baseBaseCachePolicyFree(BaseCachePolicy* const cache_policy) {
     free(cache_policy);
 }
 
-bool baseBaseCachePolicyContains(BaseCachePolicy const* const cache_policy, void const* const key) {
+bool baseCachePolicyContains(BaseCachePolicy const* const cache_policy, void const* const key) {
     assert(cache_policy && key);
 
     return cache_policy->contains_func(cache_policy->cache, key);
 }
 
-CachePolicyAddResult baseBaseCachePolicyAdd(BaseCachePolicy const* const cache_policy, void const* const key, void* const replace) {
+CachePolicyAddResult baseCachePolicyAdd(BaseCachePolicy const* const cache_policy, void const* const key, void* const replace) {
     assert(cache_policy && key && replace);
 
     return cache_policy->add_func(cache_policy->cache, key, replace);
