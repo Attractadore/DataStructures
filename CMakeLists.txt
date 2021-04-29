@@ -7,6 +7,7 @@ set(CMAKE_C_EXTENSIONS OFF)
 add_library(DataStructures
     "src/BaseOpenHashTable.c"
     "src/BaseVector.c"
+    "src/BaseCachePolicy.c"
 #    "src/list.c"
 #    "src/clist.c"
 )
@@ -27,8 +28,10 @@ install(
     FILES
     "include/DataStructures/BaseOpenHashTable.h"
     "include/DataStructures/BaseVector.h"
+    "include/DataStructures/BaseCachePolicy.h"
     "include/DataStructures/OpenHashTable.h"
     "include/DataStructures/Vector.h"
+    "include/DataStructures/CachePolicy.h"
     "include/DataStructures/list.h"
     "include/DataStructures/clist.h"
     DESTINATION
