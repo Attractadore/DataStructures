@@ -18,10 +18,15 @@
 #define CACHE_POLICY_UPPER_IDENTIFIER(name) CONCAT(CACHE_POLICY_UPPER_NAME, name)
 #define CACHE_POLICY_LOWER_IDENTIFIER(name) CONCAT(CACHE_POLICY_LOWER_NAME, name)
 
+#define CACHE_POLICY_HASH_FUNC CACHE_POLICY_UPPER_IDENTIFIER(HashFunc)
+#define CACHE_POLICY_COMPARE_FUNC CACHE_POLICY_UPPER_IDENTIFIER(CompareFunc)
+typedef uint64_t (*CACHE_POLICY_HASH_FUNC)(CACHE_POLICY_TYPE const*);
+typedef bool (*CACHE_POLICY_COMPARE_FUNC)(CACHE_POLICY_TYPE const*, CACHE_POLICY_TYPE const*);
+
 typedef struct CACHE_POLICY_UPPER_IDENTIFIER(_T) CACHE_POLICY_NAME;
 
-static inline CACHE_POLICY_NAME* CACHE_POLICY_LOWER_IDENTIFIER(Alloc)(size_t capacity, char const* algorithm) {
-    return (CACHE_POLICY_NAME*) baseCachePolicyAlloc(capacity, sizeof(CACHE_POLICY_TYPE), algorithm);
+static inline CACHE_POLICY_NAME* CACHE_POLICY_LOWER_IDENTIFIER(Alloc)(size_t capacity, const CACHE_POLICY_HASH_FUNC hash_func, const CACHE_POLICY_COMPARE_FUNC compare_func, char const* algorithm) {
+    return (CACHE_POLICY_NAME*) baseCachePolicyAlloc(capacity, sizeof(CACHE_POLICY_TYPE), hash_func, compare_func, algorithm);
 }
 
 static inline void CACHE_POLICY_LOWER_IDENTIFIER(Free)(CACHE_POLICY_NAME* const cache_policy) {
