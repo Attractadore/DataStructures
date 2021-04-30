@@ -12,7 +12,6 @@ add_library(DataStructures
     "src/BaseCachePolicy.c"
     "src/DummyCache.c"
 #    "src/list.c"
-#    "src/clist.c"
 )
 target_include_directories(DataStructures 
     INTERFACE
@@ -38,8 +37,7 @@ install(
     "include/DataStructures/BaseCachePolicy.h"
     "include/DataStructures/CachePolicyAddResult.h"
     "include/DataStructures/CachePolicy.h"
-    "include/DataStructures/list.h"
-    "include/DataStructures/clist.h"
+    "include/DataStructures/BaseDoubleList.h"
     DESTINATION
     "include/DataStructures"
 )
