@@ -1,53 +1,68 @@
-//list LRU realisation
+//list realisation
 #include "list.h"
 
-// remove_from_end - removes last used element from the cash
-void remove_from_end(struct node_t* start);
-int cur_size = 0;
-
-struct node_t* insert_in_front(struct node_t* start, const void* src) // need optimization
+typedef struct node_t {
+	DoubleListNode* next;
+	DoubleListNode* prev;
+	unsigned char data[];
+};
+struct DoubleList_T {
+	DoubleListNode* start;
+	DoubleListNode* end;
+	size_t key_size;
+	size_t length;
+ };
+DoubleList* doubleListAlloc(size_t key_size)
 {
-	if(start->data == NULL) {
-		start = calloc(1, sizeof(struct node_t));
-		start->data = calloc(1, sizeof((char*)src));
+	DoubleList* list = calloc(1, sizeof(DoubleList) + key_size);
+	list->key_size = key_size;
+	
+	return list;
+}
+DoubleListNode* doubleListAddFront(DoubleList* list, void const* value)
+{
+	DoubleListNode* cur = calloc(1, sizeof(*cur) + list->key_size);
+	memcpy(list->start->data, value, list->key_size);
+	if (list->start == NULL) {
+		list->start = cur;
+		list->end = list->start;
 	}
 	else {
-		start->prev = calloc(1, sizeof(struct node_t));
-		while(cur_size + sizeof((char*)src) > MAX_CASH_SZ)
-			remove_from_end(start);
-		start->prev->data = calloc(1, sizeof((char*)src));
-		start->prev->next = start;
-		start = start->prev;
+		list->start->prev = cur;
+		cur->next = list->start;
+		list->start = cur;
 	}
-	memcpy(start->data, src, sizeof((char*)src));///!!!!!!!!!
-	cur_size += sizeof((char*)src); // update cur_size
-	return start;
-}
 
-void remove_from_end(struct node_t* start)//done
+	
+	list->length++; // update cur_size
+	return list->start;
+}
+DoubleListNode* doubleListPopBack(DoubleList* list)
 {
-	assert(start);
-	while(start->next != NULL)
-		start = start->next;
-	cur_size -= sizeof(start->data); // update cur_size
-	free(start->data);
-	free(start);
+	if (list->end->prev == NULL) {
+		free(list->end);
+		list->length--;
+		return NULL;
+	}
+	list->end = list->end->prev;
+	free(list->end->next);
+	list->length--;
+	return list->end;
 }
 
-struct node_t* move_forward(struct node_t* cur, struct node_t* start)//done
+DoubleListNode* doubleListMoveToFront(DoubleList* list, DoubleListNode* node)
 {
-	assert(start);
-	assert(cur);
+	node->prev->next = node->next;
+	node->next->prev = node->prev;
+	list->start->prev = node;
+	node->next = list->start;
+	node->prev = NULL;
 
-	cur->prev->next = cur->next;
-	cur->next->prev = cur->prev;
-	assert(start->prev == NULL);
-	start->prev = cur;
-	cur->next = start;
-	cur->prev = NULL;
-	return cur;
+	list->start = node;
+	return list->start;
 }
 
+/*
 void show_list(struct node_t* start)// for int only, not tested yet
 {
 	printf("%d ", *(start->data));
@@ -57,12 +72,17 @@ void show_list(struct node_t* start)// for int only, not tested yet
 	else
 		printf("\n");
 }
+*/
 
-void free_list(struct node_t* start)//done
+void doubleListFree(DoubleList* list)
 {
-	assert(start);
-	if(start->next != NULL)
-		free_list(start->next);
-	free(start->data);
-	free(start);
+	DoubleListNode* tmp; 
+	while (list->start != NULL) {
+		tmp = list->start->next;
+		free(list->start->data);
+		free(list->start)
+		list->start = tmp;
+	}
+		
+	free(list)
 }
