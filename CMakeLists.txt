@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.4)
 
+project(DataStructures)
+
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED TRUE)
 set(CMAKE_C_EXTENSIONS OFF)
@@ -27,11 +29,14 @@ install(
 
 install(
     FILES
+    "include/DataStructures/BaseCompareFunc.h"
+    "include/DataStructures/BaseHashFunc.h"
     "include/DataStructures/BaseOpenHashTable.h"
-    "include/DataStructures/BaseVector.h"
-    "include/DataStructures/BaseCachePolicy.h"
     "include/DataStructures/OpenHashTable.h"
+    "include/DataStructures/BaseVector.h"
     "include/DataStructures/Vector.h"
+    "include/DataStructures/BaseCachePolicy.h"
+    "include/DataStructures/CachePolicyAddResult.h"
     "include/DataStructures/CachePolicy.h"
     "include/DataStructures/list.h"
     "include/DataStructures/clist.h"

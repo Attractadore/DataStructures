@@ -16,8 +16,8 @@ struct BaseCachePolicy_T {
     BaseCacheFreeFunc free_func;
 };
 
-BaseCachePolicy* baseCachePolicyAlloc(const size_t capacity, const size_t key_size, char const* algorithm) {
-    assert(capacity && algorithm);
+BaseCachePolicy* baseCachePolicyAlloc(const size_t capacity, const size_t key_size, const BaseHashFunc hash_func, const BaseCompareFunc compare_func, char const* const algorithm) {
+    assert(capacity && key_size && hash_func && compare_func && algorithm);
 
     BaseCachePolicy* const cache_policy = calloc(1, sizeof(*cache_policy));
     if (!cache_policy) {
