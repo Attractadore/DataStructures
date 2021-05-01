@@ -16,7 +16,24 @@ struct BaseCachePolicy_T {
     BaseCacheFreeFunc free_func;
 };
 
-BaseCachePolicy* baseCachePolicyAlloc(const size_t capacity, const size_t key_size, const BaseHashFunc hash_func, const BaseCompareFunc compare_func, char const* const algorithm) {
+char const* const cacheAlgorithmNames[CACHE_ALGORITHM_INVALID] =
+    {
+        [CACHE_ALGORITHM_DUMMY] = "Dummy",
+};
+
+CacheAlgorithm getCacheAlgorithm(char const* const algorithm_str) {
+    assert(algorithm_str);
+
+    for (size_t i = 0; i < CACHE_ALGORITHM_INVALID; i++) {
+        if (strcmp(algorithm_str, cacheAlgorithmNames[i]) == 0) {
+            return i;
+        }
+    }
+
+    return CACHE_ALGORITHM_INVALID;
+}
+
+BaseCachePolicy* baseCachePolicyAlloc(const size_t capacity, const size_t key_size, const BaseHashFunc hash_func, const BaseCompareFunc compare_func, const CacheAlgorithm algorithm) {
     assert(capacity && key_size && hash_func && compare_func && algorithm);
 
     BaseCachePolicy* const cache_policy = calloc(1, sizeof(*cache_policy));
@@ -24,22 +41,22 @@ BaseCachePolicy* baseCachePolicyAlloc(const size_t capacity, const size_t key_si
         return NULL;
     }
 
-    if (strcmp(algorithm, "LIRS") == 0) {
-        assert(!"Not implemented");
-    } else if (strcmp(algorithm, "LRU") == 0) {
-        assert(!"Not implemented");
-    } else {
-        cache_policy->cache = dummyCacheAlloc(capacity, key_size);
-        if (!cache_policy->cache) {
-            free(cache_policy);
+    switch (algorithm) {
+        case CACHE_ALGORITHM_DUMMY:
+            cache_policy->cache = dummyCacheAlloc(capacity, key_size);
+            if (!cache_policy->cache) {
+                free(cache_policy);
+                return NULL;
+            }
+            cache_policy->add_func = (BaseCacheAddFunc) dummyCacheAdd;
+            cache_policy->contains_func = (BaseCacheContainsFunc) dummyCacheContains;
+            cache_policy->free_func = (BaseCacheFreeFunc) dummyCacheFree;
+            return cache_policy;
+        case CACHE_ALGORITHM_INVALID:
             return NULL;
-        }
-        cache_policy->add_func = (BaseCacheAddFunc) dummyCacheAdd;
-        cache_policy->contains_func = (BaseCacheContainsFunc) dummyCacheContains;
-        cache_policy->free_func = (BaseCacheFreeFunc) dummyCacheFree;
     }
 
-    return cache_policy;
+    assert(!"Invalid enum value");
 }
 
 void baseCachePolicyFree(BaseCachePolicy* const cache_policy) {

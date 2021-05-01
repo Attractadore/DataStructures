@@ -1,3 +1,4 @@
+// This is an internal implementation header -- use OpenHashTable.h instead
 #pragma once
 
 #include "BaseCompareFunc.h"
