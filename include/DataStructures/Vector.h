@@ -1,5 +1,5 @@
 // VECTOR_TYPE defines the type of data you want to store in a Vector.
-// VECTOR_TYPE_NAME defines the name prefix of a Vector.
+// VECTOR_TYPE_NAME defines the name suffix of a Vector.
 // If VECTOR_TYPE_NAME = Int,
 // Vector becomes VectorInt, vectorAlloc becomes vectorIntAlloc.
 
