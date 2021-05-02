@@ -1,8 +1,7 @@
-#include "LRUCache.h"
-
 #include "BaseDoubleList.h"
 #include "BaseOpenHashTable.h"
 #include "BaseVector.h"
+#include "LRUCache.h"
 
 struct LRUCache_T {
 	BaseOHT* table;
@@ -64,3 +63,25 @@ void const* LRUgetNextData(LRUCache* LRU)
 {
 	return baseVectorConstData((BaseVector const*)LRU->vector);
 }
+/*------------------------------------------------------------------------------------------------------------------------------*/
+bool lruCacheContains(LRUCache* LRU, void const* key)
+{
+	DoubleListNode* tmp = (DoubleListNode*)baseOHTFind(LRU->table, key); // returns NULL if failed to find
+	if (tmp) {
+		doubleListMoveToFront(tmp); // may be this shouldnt be here
+		return 0;
+	}
+	return 1; 
+}
+/*------------------------------------------------------------------------------------------------------------------------------*/
+CachePolicyAddResult lruCacheAdd(LRUCache* LRU, void const* key, void const* replace)
+{
+	if (replace/*isnt enough space*/) {
+		doubleListPopBack(LRU->list);
+		void baseOHTDelete(LRU->table, key);
+		return CACHE_POLICY_ADD_REPLACE;
+	}
+	void* baseOHTInsert(LRU->table, key, doubleListAddFront(LRU->list, key);
+	return CACHE_POLICY_ADD_NO_REPLACE;
+}
+/*------------------------------------------------------------------------------------------------------------------------------*/

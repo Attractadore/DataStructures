@@ -16,3 +16,8 @@ void LRUstep(LRUCache* LRU); // +-
 
 // LRUgetNextData - returns next element from LRU->vector
 void const* LRUgetNextData(LRUCache* LRU); // +-
+
+// lruCacheAdd - adds key into cash and tells wich one remove from cache
+CachePolicyAddResult lruCacheAdd(LRUCache* LRU, void const* key, void const* replace);
+// lruCacheContains - check if the key should added to cache
+bool lruCacheContains(LRUCache* LRU, void const* key);
