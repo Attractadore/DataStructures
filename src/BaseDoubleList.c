@@ -19,7 +19,7 @@ DoubleList* doubleListAlloc(size_t key_size)
 	DoubleList* list = calloc(1, sizeof(DoubleList) + key_size);
 	assert(list);
 	// list->key_size = key_size;
-	
+
 	return list;
 }
 /*------------------------------------------------------------------------------------------------------------------------------*/
