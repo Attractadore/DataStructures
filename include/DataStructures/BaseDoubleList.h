@@ -1,14 +1,13 @@
 #pragma once
 
 #include <stddef.h>
-
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
 
 typedef struct DoubleList_T DoubleList;
-typedef struct node_t DoubleListNode;
 
+typedef struct node_t DoubleListNode;
 // doubleListAlloc - creating list with sizeof(element) = key_size, returns list pointer
 DoubleList* doubleListAlloc(size_t key_size); //+
 // doubleListFree - free list

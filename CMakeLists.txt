@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.4)
 
-project(DataStructures)
-
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED TRUE)
 set(CMAKE_C_EXTENSIONS OFF)
@@ -12,6 +10,7 @@ add_library(DataStructures
     "src/BaseCachePolicy.c"
     "src/DummyCache.c"
 #    "src/list.c"
+#    "src/clist.c"
 )
 target_include_directories(DataStructures 
     INTERFACE
@@ -28,16 +27,14 @@ install(
 
 install(
     FILES
-    "include/DataStructures/BaseCompareFunc.h"
-    "include/DataStructures/BaseHashFunc.h"
     "include/DataStructures/BaseOpenHashTable.h"
-    "include/DataStructures/OpenHashTable.h"
     "include/DataStructures/BaseVector.h"
-    "include/DataStructures/Vector.h"
     "include/DataStructures/BaseCachePolicy.h"
-    "include/DataStructures/CachePolicyAddResult.h"
+    "include/DataStructures/OpenHashTable.h"
+    "include/DataStructures/Vector.h"
     "include/DataStructures/CachePolicy.h"
-    "include/DataStructures/BaseDoubleList.h"
+    "include/DataStructures/list.h"
+    "include/DataStructures/clist.h"
     DESTINATION
     "include/DataStructures"
 )

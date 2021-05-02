@@ -16,7 +16,7 @@ struct node_t {
  /*------------------------------------------------------------------------------------------------------------------------------*/
 DoubleList* doubleListAlloc(size_t key_size)
 {
-	DoubleList* list = calloc(1, sizeof(DoubleList) + key_size);
+	DoubleList* list = calloc(1, sizeof(DoubleList));
 	list->key_size = key_size;
 	
 	return list;

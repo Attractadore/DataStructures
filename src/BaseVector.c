@@ -12,7 +12,7 @@ struct BaseVector_T {
 };
 
 enum {
-    VECTOR_DEFAULT_CAPACITY = 16,
+    VECTOR_DEFAULT_CAPACITY = 128,
 };
 
 BaseVector* baseVectorAlloc(const size_t elem_size) {
@@ -22,6 +22,12 @@ BaseVector* baseVectorAlloc(const size_t elem_size) {
     }
 
     vector->elem_size = elem_size;
+    vector->capacity = VECTOR_DEFAULT_CAPACITY;
+    vector->data = calloc(vector->capacity, vector->elem_size);
+    if (!vector->data) {
+        free(vector);
+        return NULL;
+    }
 
     return vector;
 }
@@ -38,8 +44,8 @@ void baseVectorFree(BaseVector* const vector) {
 bool baseVectorPushBack(BaseVector* const vector, void const* const elem_ptr) {
     assert(vector && elem_ptr);
 
-    if (!vector->data || vector->size == vector->capacity) {
-        const size_t new_capacity = (vector->capacity) ? (vector->capacity * 2) : (VECTOR_DEFAULT_CAPACITY);
+    if (vector->size == vector->capacity) {
+        const size_t new_capacity = vector->capacity * 2;
         void* const new_data = realloc(vector->data, new_capacity * vector->elem_size);
         if (!new_data) {
             return false;
