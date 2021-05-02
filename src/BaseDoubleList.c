@@ -17,9 +17,14 @@ struct DoubleListNode_T {
 DoubleList* doubleListAlloc(size_t key_size)
 {
 	DoubleList* list = calloc(1, sizeof(DoubleList) + key_size);
+<<<<<<< HEAD
 	assert(list);
 	// list->key_size = key_size;
 
+=======
+	list->key_size = key_size;
+	
+>>>>>>> parent of c45bec9... commit
 	return list;
 }
 /*------------------------------------------------------------------------------------------------------------------------------*/

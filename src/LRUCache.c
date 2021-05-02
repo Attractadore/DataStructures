@@ -19,27 +19,26 @@ LRUCache* LRUCacheAlloc(size_t element_size, size_t element_align, size_t value_
 	return LRU;
 }
 /*------------------------------------------------------------------------------------------------------------------------------*/
-uint64_t LRU_hash_func(void const* key)
+/*uint64_t LRU_hash_func(void const* key) // for ints, silly
 {
-	uint64_t hash;
-	//...//CRC-32
+	uint64_t hash = *((uint64_t*)key); // in demo.c lies normal hash_func...
 	return hash;
-}
+}*/
 /*------------------------------------------------------------------------------------------------------------------------------*/
-bool LRU_hash_cmp(void const* left_key, void const* right_key)
+/*bool LRU_hash_cmp(void const* left_key, void const* right_key)
 {
 	return left_key == right_key;
-}
+}*/
 /*------------------------------------------------------------------------------------------------------------------------------*/
-void LRU(void)
+void LRUCache(size_t element_size, size_t element_align, size_t value_size, size_t value_align, BaseHashFunc hash_func, BaseCompareFunc compare_func)
 {
-	LRUCache* LRU = LRUCacheAlloc(sizeof(int), sizeof(int), sizeof(DoubleList*), sizeof(DoubleList*), LRU_hash_func, LRU_hash_cmp)); // for ints
+	LRUCache* LRU = LRUCacheAlloc(element_size, element_align, value_size, value_align, hash_func, compare_func));
 	while (baseVectorGetSize((BaseVector const*)LRU->vector) > 0) {
 		LRUstep(LRU);
 	}
 }
 /*------------------------------------------------------------------------------------------------------------------------------*/
-void LRUstep(LRUCache* LRU)
+void LRUCacheStep(LRUCache* LRU)
 {
 	void const* new_element = LRUgetNextData(LRU);
 	DoubleListNode* position = LRUsearchDoubleList(LRU, new_element);
@@ -56,7 +55,7 @@ void LRUstep(LRUCache* LRU)
 	}
 }
 /*------------------------------------------------------------------------------------------------------------------------------*/
-DoubleListNode* LRUsearchDoubleList(LRUCache* LRU, void const* key)// get hash
+DoubleListNode* LRUsearchInDoubleList(LRUCache* LRU, void const* key)// get hash
 {
 	return (DoubleListNode*)baseOHTFindOrInsert(LRU->table, key); // baseOHTFindOrInsert
 }
