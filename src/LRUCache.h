@@ -1,16 +1,13 @@
 #pragma once
 
-#include "BaseDoubleList.h"
-#include "BaseOpenHashTable.h"
-#include "BaseVector.h"
 
 typedef struct LRUCache_T LRUCache;
 
 // LRUCacheAlloc - create LRUCache structure with hash_table, vector, double_list
-LRUCache* LRUCacheAlloc(size_t element_size, ...);// +-
+LRUCache* LRUCacheAllocDList(size_t element_size, size_t element_align, size_t value_size, size_t value_align, BaseHashFunc hash_func, BaseCompareFunc compare_func);// +-
 
-// LRUsearch - search element in cache, returns its pointer or NULL
-DoubleListNode* LRUsearchDoubleList(LRUCache* LRU, void const* key);// +
+// LRUsearchInDoubleList - search element in cache, returns its pointer or NULL
+DoubleListNode* LRUsearchInDoubleList(LRUCache* LRU, void const* key);// +
 
 // LRU - ...
 void LRU(void); // dont know what to send 

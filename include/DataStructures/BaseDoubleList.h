@@ -6,8 +6,8 @@
 #include <string.h>
 
 typedef struct DoubleList_T DoubleList;
+typedef struct DoubleListNode_T DoubleListNode;
 
-typedef struct node_t DoubleListNode;
 // doubleListAlloc - creating list with sizeof(element) = key_size, returns list pointer
 DoubleList* doubleListAlloc(size_t key_size); //+
 // doubleListFree - free list
@@ -15,8 +15,8 @@ void doubleListFree(DoubleList* list); //+
 
 // doubleListAddFront - copy value in new node in front of list, returns new list->start
 DoubleListNode* doubleListAddFront(DoubleList* list, void const* value); //+
-// doubleListPrepend - creating new node in front of list
-void doubleListPrepend(DoubleList* list);
+// doubleListPrepend - adds node in front of list, returns new list->start
+DoubleListNode* doubleListPrepend(DoubleList* list, DoubleListNode* node);
 
 // doubleListRemove - removes node from list and returns its pointer
 DoubleListNode* doubleListRemove(DoubleList* list, DoubleListNode* node);//+
