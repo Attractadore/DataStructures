@@ -72,17 +72,15 @@ static void baseBinHeapHeapifyImp(BaseBinHeap* const heap, size_t i) {
         const size_t l = binHeapLeft(i);
         const size_t r = binHeapRight(i);
         size_t m = i;
-        void* const l_ptr = baseVectorPtr(heap->data, l);
-        void* const r_ptr = baseVectorPtr(heap->data, r);
         void* m_ptr = i_ptr;
 
-        if (l < size && heap->order_func(m_ptr, l_ptr) <= 0) {
+        if (l < size && heap->order_func(m_ptr, baseVectorPtr(heap->data, l)) <= 0) {
             m = l;
-            m_ptr = l_ptr;
+            m_ptr = baseVectorPtr(heap->data, l);
         }
-        if (r < size && heap->order_func(m_ptr, r_ptr) <= 0) {
+        if (r < size && heap->order_func(m_ptr, baseVectorPtr(heap->data, r)) <= 0) {
             m = r;
-            m_ptr = r_ptr;
+            m_ptr = baseVectorPtr(heap->data, r);
         }
         if (m == i) {
             return;
@@ -103,8 +101,11 @@ static void baseBinHeapHeapify(BaseBinHeap* const heap) {
 void baseBinHeapPop(BaseBinHeap* const heap, void* const res) {
     assert(heap && baseBinHeapSize(heap));
 
-    memcpy(baseVectorData(heap->data), baseVectorBackConstPtr(heap->data), baseVectorValueSize(heap->data));
-    baseVectorPopBack(heap->data, res);
+    const size_t value_size = baseVectorValueSize(heap->data);
+    if (res) {
+        memcpy(res, baseVectorConstData(heap->data), value_size);
+    }
+    baseVectorPopBack(heap->data, baseVectorData(heap->data));
 
     baseBinHeapHeapify(heap);
 }
@@ -118,11 +119,11 @@ bool baseBinHeapInsert(BaseBinHeap* const heap, void const* const value) {
 
     size_t i = baseVectorSize(heap->data) - 1;
     void* i_ptr = baseVectorBackPtr(heap->data);
-    while (true) {
+    while (i) {
         const size_t p = binHeapParent(i);
         void* const p_ptr = baseVectorPtr(heap->data, p);
-        if (!i || heap->order_func(value, p_ptr) <= 0) {
-            return true;
+        if (heap->order_func(value, p_ptr) <= 0) {
+            break;
         }
 
         memswap(i_ptr, p_ptr, baseVectorValueSize(heap->data));
@@ -130,6 +131,8 @@ bool baseBinHeapInsert(BaseBinHeap* const heap, void const* const value) {
         i = p;
         i_ptr = p_ptr;
     }
+
+    return true;
 }
 
 size_t baseBinHeapSize(BaseBinHeap const* const heap) {
