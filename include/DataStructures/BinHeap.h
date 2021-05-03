@@ -3,9 +3,6 @@
 // If BIN_HEAP_TYPE_NAME = Int,
 // BinHeap becomes BinHeapInt, binHeapAlloc becomes binHeapIntAlloc.
 
-#define BIN_HEAP_TYPE int
-#define BIN_HEAP_TYPE_NAME Int
-
 #ifndef BIN_HEAP_TYPE
 #error Define the type to use as BIN_HEAP_TYPE
 #endif
