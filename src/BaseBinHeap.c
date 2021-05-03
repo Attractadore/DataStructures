@@ -131,3 +131,9 @@ bool baseBinHeapInsert(BaseBinHeap* const heap, void const* const value) {
         i_ptr = p_ptr;
     }
 }
+
+size_t baseBinHeapSize(BaseBinHeap const* const heap) {
+    assert(heap);
+
+    return baseVectorSize(heap->data);
+}
