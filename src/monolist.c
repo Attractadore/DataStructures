@@ -4,7 +4,7 @@
 #include <string.h>
 
 
-struct mononode_t {
+struct MonoListNode_t {
     MonoListNode* next;
     unsigned char data[];
 };
@@ -29,10 +29,10 @@ void monoListFree(MonoList* ml) {
     free(ml);
 }
 
-MonoListNode* monoListAddFront(MonoList* ml, void const* value) {
+MonoListNode* monoListAddToFront(MonoList* ml, void const* value) {
     assert(ml && "the list is not defined");
-    MonoListNode* newstart = calloc(1, sizeof(MonoList)ml->key_size);
-    memcpy(list->start->data, value, list->key_size);
+    MonoListNode* newstart = calloc(1, sizeof(MonoListNode) + ml->key_size);
+    memcpy(newstart->data, value, ml->key_size);
     ml->length++;
     if (ml->start == NULL) {
         ml->start = newstart;
@@ -44,6 +44,22 @@ MonoListNode* monoListAddFront(MonoList* ml, void const* value) {
     return ml->start;
 }
 
+MonoListNode* monoListAddToBack(MonoList* ml, void const* value) {
+    assert(ml && "the list is not defined");
+    MonoListNode* newend = calloc(1,sizeof(MonoleListNode) + ml->key_size);
+    memcpy(newend->data, value, ml->key_size);
+    ml->length++;
+    newend->next = NULL;
+    if (ml->end = NULL) {
+        ml->start = newend;
+        ml->end = newend;
+        return ml->end;
+    }
+    ml->end->next = newend;
+    ml->end = newend;
+    return ml->end;
+}
+
 MonoListNode* monoListPopBack(MonoList* ml) { //not sure if the old end should be deleted here
     assert(ml && "the list is not defined");
     assert(ml->end && "the list has no end...");
@@ -51,19 +67,37 @@ MonoListNode* monoListPopBack(MonoList* ml) { //not sure if the old end should b
     if (ml->start == ml->end) {
         ml->start = NULL;
         ml->end = NULL;
+        return ml-start;
     }
     MonoListNode* newend = ml->start;
     while (newend->next != ml->end) {
         newend = newend->next;
     }
+    MonoListNode* outcast = ml->end;
     ml->end = newend;
+    free(outcast);
     newend->next = NULL;
     return ml->end;
 }
 
-MonoListNode* monoListMoveToFront(MonoList* ml, MonoListNode* prenode) {
+MonoListNode* monoListPopFront(MonoList* ml) {
     assert(ml && "the list is not defined");
-    assert(prenode && "the prvious node is not defined");
+    assert(ml->start && "there is nothing to cut out");
+    ml->length--;
+    if (ml->start == ml->end) {
+        ml->start = NULL;
+        ml->end = NULL;
+        return ml->start;
+    }
+    MonoListNode* outcast = ml->start;
+    ml->start = ml->start->next;
+    free(outcast);
+    return ml->start;
+}
+
+MonoListNode* monoListMoveNextToFront(MonoList* ml, MonoListNode* prenode) {
+    assert(ml && "the list is not defined");
+    assert(prenode && "the previous node is not defined");
     ml->length++;
     MonoListNode* node = monoListRemove(ml, prenode);
     node->next = ml->start;
@@ -71,11 +105,22 @@ MonoListNode* monoListMoveToFront(MonoList* ml, MonoListNode* prenode) {
     return ml->start;
 }
 
-MonoListNode* monoListRemove(MonoList* ml, MonoListNode* prenode) {
+MonoListNode* monoListMoveNextToBack(MonoList* ml, MonoListNode* prenode) {
+    assert(ml && "the list is not defined");
+    assert(prenode && "the previous node is not defined");
+    ml->length++;
+    MonoListNode* node = monoListRemove(ml, prenode);
+    ml->end->next = node;
+    ml->end = node;
+    return ml->end;
+}
+
+MonoListNode* monoListRemoveNext(MonoList* ml, MonoListNode* prenode) {
     assert(ml && "the list is not defined");
     MonoListNode* node = prenode->next;
     ml->length--;
     prenode->next = prenode->next->next;
+    node->next = NULL;
     return node;
 }
 
@@ -87,5 +132,36 @@ MonoList* monoListAlloc(size_t key_size) {
     newlist->length = 0;
     return newlist;
 }
+
+MonoListNode* monoListDeleteNext(MonoList* ml, MonoListNode* prenode) {
+    assert (prenode->next && "there is nothing to delete");
+    MonoListNode* nextnode = prenode->next->next;
+    free(prenode->next);
+    prenode->next = nextnode;
+    ml->length--;
+    return nextnode;
+}
+
+MonoListNode* monoListAppend(MonoList* ml, MonoListNode* node) {
+    assert(ml && "the list is not defined");
+    assert(node && "the node is not defined");
+    assert(!node && "you are trying to add a bunch of nodes");
+    ml->length++;
+    ml->end->next = node;
+    ml->end = node;
+    return ml->end;
+}
+
+MonoListNode* monoListPrepend(MonoList* ml, MonoList* node) {
+    assert(ml && "the list is not defined");
+    assert(node && "the node is not defined");
+    ml->length++;
+    node->next = ml->start;
+    ml->start = node;
+    return ml->start;
+}
+
+
+
 
 
