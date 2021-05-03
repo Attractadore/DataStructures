@@ -46,7 +46,7 @@ MonoListNode* monoListAddToFront(MonoList* ml, void const* value) {
 
 MonoListNode* monoListAddToBack(MonoList* ml, void const* value) {
     assert(ml && "the list is not defined");
-    MonoListNode* newend = calloc(1,sizeof(MonoleListNode) + ml->key_size);
+    MonoListNode* newend = calloc(1,sizeof(MonoListNode) + ml->key_size);
     memcpy(newend->data, value, ml->key_size);
     ml->length++;
     newend->next = NULL;
