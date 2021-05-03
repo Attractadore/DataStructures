@@ -95,6 +95,10 @@ static void baseBinHeapHeapifyImp(BaseBinHeap* const heap, size_t i) {
 static void baseBinHeapHeapify(BaseBinHeap* const heap) {
     assert(heap);
 
+    if (!baseVectorSize(heap->data)) {
+        return;
+    }
+
     baseBinHeapHeapifyImp(heap, 0);
 }
 
