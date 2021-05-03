@@ -1,14 +1,17 @@
+#pragma once
 #include <stddef.h>
-#include <stdlib.h>
-#include <assert.h>
 
 typedef struct MonoList_T MonoList;
 typedef struct mononode_t MonoListNode;
 
 MonoList* monoListAlloc(size_t key_size);
 void monoListFree(MonoList* ml);
-MonoListNode* monoListAddFront(MonoList* ml, void const* value);
+MonoListNode* monoListAddToFront(MonoList* ml, void const* value);
+MonoListNode* monoListAddToBack(MonoList* ml, void const* value);
 MonoListNode* monoListPopBack(MonoList* ml);
-//next two functions receive the node previous to the node being operated with
-MonoListNode* monoListMoveToFront(MonoList* ml, MonoListNode* node);
-MonoListNode* monoListRemove(MonoList* ml, MonoListNode* node);
+MonoListNode* monoListPopFront(MonoList* ml);
+MonoListNode* monoListMoveNextToFront(MonoList* ml, MonoListNode* prenode);
+MonoListNode* monoListMoveNextToBack(MonoList* ml, MonoListNode* prenode);
+MonoListNode* monoListRemoveNext(MonoList* ml, MonoListNode* prenode);
+MonoListNode* monoListDeleteNext(MonoList* ml, MonoListNode* prenode);
+
