@@ -9,6 +9,7 @@ set(CMAKE_C_EXTENSIONS OFF)
 add_library(DataStructures
     "src/BaseOpenHashTable.c"
     "src/BaseVector.c"
+    "src/BaseBinHeap.c"
     "src/BaseCachePolicy.c"
     "src/DummyCache.c"
 #    "src/list.c"
@@ -33,6 +34,8 @@ install(
     "include/DataStructures/OpenHashTable.h"
     "include/DataStructures/BaseVector.h"
     "include/DataStructures/Vector.h"
+    "include/DataStructures/BaseBinHeap.h"
+    "include/DataStructures/BinHeap.h"
     "include/DataStructures/BaseCachePolicy.h"
     "include/DataStructures/CachePolicyAddResult.h"
     "include/DataStructures/CachePolicy.h"
