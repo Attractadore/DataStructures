@@ -28,8 +28,7 @@ install(
 
 install(
     FILES
-    "include/DataStructures/BaseCompareFunc.h"
-    "include/DataStructures/BaseHashFunc.h"
+    "include/DataStructures/BaseFunc.h"
     "include/DataStructures/BaseOpenHashTable.h"
     "include/DataStructures/OpenHashTable.h"
     "include/DataStructures/BaseVector.h"
