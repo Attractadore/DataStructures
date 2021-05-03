@@ -14,4 +14,6 @@ MonoListNode* monoListMoveNextToFront(MonoList* ml, MonoListNode* prenode);
 MonoListNode* monoListMoveNextToBack(MonoList* ml, MonoListNode* prenode);
 MonoListNode* monoListRemoveNext(MonoList* ml, MonoListNode* prenode);
 MonoListNode* monoListDeleteNext(MonoList* ml, MonoListNode* prenode);
+MonoListNode* monoListAppend(MonoList* ml, MonoListNode* node);
+MonoListNode* monoListPrepend(MonoList* ml, MonoListNode* node);
 
