@@ -1,8 +1,7 @@
 // This is an internal implementation header -- use CachePolicy.h instead
 #pragma once
 
-#include "BaseCompareFunc.h"
-#include "BaseHashFunc.h"
+#include "BaseFunc.h"
 #include "CachePolicyAddResult.h"
 
 #include <stddef.h>
