@@ -1,4 +1,4 @@
-#include <monolist.h>
+#include "monolist.h"
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
@@ -17,7 +17,8 @@ struct MonoList_T {
 };
 
 void monoListFree(MonoList* ml) {
-    assert(ml && "the list is already empty");
+    if (ml == NULL)
+        return;
     MonoListNode* cur = ml->start;
     while (cur != ml->end) {
         cur = cur->next;
@@ -32,6 +33,8 @@ void monoListFree(MonoList* ml) {
 MonoListNode* monoListAddToFront(MonoList* ml, void const* value) {
     assert(ml && "the list is not defined");
     MonoListNode* newstart = calloc(1, sizeof(MonoListNode) + ml->key_size);
+    if (newstart == NULL)
+        return NULL;
     memcpy(newstart->data, value, ml->key_size);
     ml->length++;
     if (ml->start == NULL) {
@@ -46,7 +49,9 @@ MonoListNode* monoListAddToFront(MonoList* ml, void const* value) {
 
 MonoListNode* monoListAddToBack(MonoList* ml, void const* value) {
     assert(ml && "the list is not defined");
-    MonoListNode* newend = calloc(1,sizeof(MonoListNode) + ml->key_size);
+    MonoListNode* newend = calloc(1,sizeof(MonoleListNode) + ml->key_size);
+    if (newend == NULL)
+        return NULL;
     memcpy(newend->data, value, ml->key_size);
     ml->length++;
     newend->next = NULL;
@@ -65,9 +70,10 @@ MonoListNode* monoListPopBack(MonoList* ml) { //not sure if the old end should b
     assert(ml->end && "the list has no end...");
     ml->length--;
     if (ml->start == ml->end) {
+        free(ml->start);
         ml->start = NULL;
         ml->end = NULL;
-        return ml-start;
+        return NULL;
     }
     MonoListNode* newend = ml->start;
     while (newend->next != ml->end) {
@@ -85,9 +91,10 @@ MonoListNode* monoListPopFront(MonoList* ml) {
     assert(ml->start && "there is nothing to cut out");
     ml->length--;
     if (ml->start == ml->end) {
+        free(ml->start);
         ml->start = NULL;
         ml->end = NULL;
-        return ml->start;
+        return NULL;
     }
     MonoListNode* outcast = ml->start;
     ml->start = ml->start->next;
@@ -117,6 +124,8 @@ MonoListNode* monoListMoveNextToBack(MonoList* ml, MonoListNode* prenode) {
 
 MonoListNode* monoListRemoveNext(MonoList* ml, MonoListNode* prenode) {
     assert(ml && "the list is not defined");
+    if (prenode->next == NULL)
+        return NULL;
     MonoListNode* node = prenode->next;
     ml->length--;
     prenode->next = prenode->next->next;
@@ -126,10 +135,9 @@ MonoListNode* monoListRemoveNext(MonoList* ml, MonoListNode* prenode) {
 
 MonoList* monoListAlloc(size_t key_size) {
     MonoList* newlist = calloc(1, sizeof(MonoList));
-    newlist->start = NULL;
-    newlist->end = NULL;
+    if (newlist = NULL)
+        return NULL;
     newlist->key_size = key_size;
-    newlist->length = 0;
     return newlist;
 }
 
@@ -145,8 +153,13 @@ MonoListNode* monoListDeleteNext(MonoList* ml, MonoListNode* prenode) {
 MonoListNode* monoListAppend(MonoList* ml, MonoListNode* node) {
     assert(ml && "the list is not defined");
     assert(node && "the node is not defined");
-    assert(!node && "you are trying to add a bunch of nodes");
+    assert(!(node->next) && "you are trying to add a bunch of nodes");
     ml->length++;
+    if (ml->end == NULL) {
+        ml->start = node;
+        ml->end = node;
+        return ml->end;
+    }
     ml->end->next = node;
     ml->end = node;
     return ml->end;
@@ -158,8 +171,11 @@ MonoListNode* monoListPrepend(MonoList* ml, MonoList* node) {
     ml->length++;
     node->next = ml->start;
     ml->start = node;
+    if (ml->end == NULL)
+        ml->end = node;
     return ml->start;
 }
+
 
 
 
