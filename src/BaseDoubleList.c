@@ -6,8 +6,6 @@
 // #include "C:\new_code\DataStructures\include\DataStructures\BaseDoubleList.h"
 #include "BaseDoubleList.h"
 
-
-/*
 struct DoubleListNode_T {
 	DoubleListNode* next;
 	DoubleListNode* prev;
@@ -20,7 +18,7 @@ struct DoubleListNode_T {
 	size_t key_size;
 	size_t length;
  };
- */
+ 
  /*------------------------------------------------------------------------------------------------------------------------------*/
 DoubleList* doubleListAlloc(size_t key_size)
 {
@@ -142,7 +140,7 @@ DoubleListNode* doubleListRemove(DoubleList* list, DoubleListNode* node)
 	return node;
 }
 /*------------------------------------------------------------------------------------------------------------------------------*/
-void doubleListFree(DoubleList* list) // Debug
+void doubleListFree(DoubleList* list) 
 {
 	if (list) {
 		DoubleListNode* tmp = list->start, *next;

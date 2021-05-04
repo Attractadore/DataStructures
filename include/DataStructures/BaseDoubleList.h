@@ -5,7 +5,7 @@
 typedef struct DoubleList_T DoubleList;
 typedef struct DoubleListNode_T DoubleListNode;
 
-//typedef enum type TypeOfValue;
+//typedef enum type TypeOfValue, for tests
 
 typedef enum type {
 	TYPE_OF_VALUE_INT,
@@ -15,18 +15,6 @@ typedef enum type {
 	TYPE_OF_VALUE_STRING,
 }TypeOfValue;
 
-struct DoubleListNode_T {
-	DoubleListNode* next;
-	DoubleListNode* prev;
-	unsigned char data[];
-};
-
-struct DoubleList_T {
-	DoubleListNode* start;
-	DoubleListNode* end;
-	size_t key_size;
-	size_t length;
-};
 
 // doubleListAlloc - creating list with sizeof(element) = key_size, returns list pointer
 DoubleList* doubleListAlloc(size_t key_size); //+
