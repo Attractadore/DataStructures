@@ -1,5 +1,5 @@
 // DoubleList tests
-#include "BaseDoubleList.h"
+#include "BaseDoubleList.c"
 #include <stdlib.h>
 
 int main() { 

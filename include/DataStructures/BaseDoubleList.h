@@ -5,17 +5,6 @@
 typedef struct DoubleList_T DoubleList;
 typedef struct DoubleListNode_T DoubleListNode;
 
-//typedef enum type TypeOfValue, for tests
-
-typedef enum type {
-	TYPE_OF_VALUE_INT,
-	TYPE_OF_VALUE_UINT,
-	TYPE_OF_VALUE_LINT,
-	TYPE_OF_VALUE_FLOAT,
-	TYPE_OF_VALUE_STRING,
-}TypeOfValue;
-
-
 // doubleListAlloc - creating list with sizeof(element) = key_size, returns list pointer
 DoubleList* doubleListAlloc(size_t key_size); //+
 // doubleListFree - free list
@@ -34,5 +23,11 @@ DoubleListNode* doubleListPopBack(DoubleList* list); //+
 // doubleListMoveToFront - bring node to the front of list, retuns list->start = node
 DoubleListNode* doubleListMoveToFront(DoubleList* list, DoubleListNode* node); //+
 
-// doubleListShowList - prints list, send as "type" const TYPE_OF_VALUE_"your type"
-void doubleListShowList(DoubleList* list, TypeOfValue type);
+// doubleListSize - returns current length of list
+size_t doubleListSize(DoubleList* list);
+// doubleListNodeData - returns data from node
+void const* doubleListNodeData(DoubleListNode* node);
+// doubleListBack - returns node from end of the list
+DoubleListNode* doubleListBack(DoubleList* list);
+// doubleListItemSize - returns size of elements from list
+size_t doubleListItemSize(DoubleList* list);

@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
-// #include "C:\new_code\DataStructures\include\DataStructures\BaseDoubleList.h"
 #include "BaseDoubleList.h"
 
 struct DoubleListNode_T {
@@ -18,7 +17,19 @@ struct DoubleListNode_T {
 	size_t key_size;
 	size_t length;
  };
- 
+
+ //typedef enum type TypeOfValue, for tests
+ typedef enum type {
+	 TYPE_OF_VALUE_INT,
+	 TYPE_OF_VALUE_UINT,
+	 TYPE_OF_VALUE_LINT,
+	 TYPE_OF_VALUE_FLOAT,
+	 TYPE_OF_VALUE_STRING,
+ }TypeOfValue;
+
+ // doubleListShowList - prints list, send as "type" const TYPE_OF_VALUE_"your type"
+ void doubleListShowList(DoubleList* list, TypeOfValue type);
+
  /*------------------------------------------------------------------------------------------------------------------------------*/
 DoubleList* doubleListAlloc(size_t key_size)
 {
@@ -140,14 +151,35 @@ DoubleListNode* doubleListRemove(DoubleList* list, DoubleListNode* node)
 	return node;
 }
 /*------------------------------------------------------------------------------------------------------------------------------*/
+size_t doubleListSize(DoubleList* list)
+{
+	return list->length;
+}
+/*------------------------------------------------------------------------------------------------------------------------------*/
+void const* doubleListNodeData(DoubleListNode* node)
+{
+	return node->data;
+}
+/*------------------------------------------------------------------------------------------------------------------------------*/
+DoubleListNode* doubleListBack(DoubleList* list)
+{
+	return list->end;
+}
+/*------------------------------------------------------------------------------------------------------------------------------*/
+size_t doubleListItemSize(DoubleList* list)
+{
+	return list->key_size;
+}
+/*------------------------------------------------------------------------------------------------------------------------------*/
 void doubleListFree(DoubleList* list) 
 {
 	if (list) {
-		DoubleListNode* tmp = list->start, *next;
+		DoubleListNode* tmp = list->start;
+		DoubleListNode* tmp_next;
 		while (tmp) {
-			next = tmp->next;
+			tmp_next = tmp->next;
 			free(tmp);
-			tmp = next;
+			tmp = tmp_next;
 		}
 		free(list);
 	}
