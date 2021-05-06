@@ -17,7 +17,7 @@ extern char const* const cacheAlgorithmNames[CACHE_ALGORITHM_INVALID];
 
 CacheAlgorithm getCacheAlgorithm(char const* algorithm_str);
 
-BaseCachePolicy* baseCachePolicyAlloc(size_t capacity, size_t key_size, BaseHashFunc hash_func, BaseCompareFunc compare_func, CacheAlgorithm algorithm);
+BaseCachePolicy* baseCachePolicyAlloc(size_t capacity, size_t key_size, size_t key_align, BaseHashFunc hash_func, BaseCompareFunc compare_func, CacheAlgorithm algorithm);
 void baseCachePolicyFree(BaseCachePolicy* cache_policy);
 
 bool baseCachePolicyContains(BaseCachePolicy const* cache_policy, void const* key);

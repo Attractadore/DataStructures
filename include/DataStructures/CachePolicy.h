@@ -32,7 +32,7 @@ typedef struct CACHE_POLICY_UPPER_IDENTIFIER(_T) CACHE_POLICY_NAME;
 
 // cachePolicyAlloc: Allocate a new cache policy manager.
 static inline CACHE_POLICY_NAME* CACHE_POLICY_LOWER_IDENTIFIER(Alloc)(size_t capacity, const CACHE_POLICY_HASH_FUNC hash_func, const CACHE_POLICY_COMPARE_FUNC compare_func, const CacheAlgorithm algorithm) {
-    return (CACHE_POLICY_NAME*) baseCachePolicyAlloc(capacity, sizeof(CACHE_POLICY_TYPE), (BaseHashFunc) hash_func, (BaseCompareFunc) compare_func, algorithm);
+    return (CACHE_POLICY_NAME*) baseCachePolicyAlloc(capacity, sizeof(CACHE_POLICY_TYPE), _Alignof(CACHE_POLICY_TYPE), (BaseHashFunc) hash_func, (BaseCompareFunc) compare_func, algorithm);
 }
 
 // cachePolicyFree: Free a cache policy manager.
