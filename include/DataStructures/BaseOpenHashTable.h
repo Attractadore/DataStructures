@@ -1,11 +1,9 @@
 #pragma once
 
-#include <stdbool.h>
+#include "BaseFunc.h"
+
 #include <stddef.h>
 #include <stdint.h>
-
-typedef uint64_t (*BaseHashFunc)(void const* key);
-typedef bool (*BaseCompareFunc)(void const* left_key, void const* right_key);
 
 typedef struct BaseOHT_T BaseOHT;
 
