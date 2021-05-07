@@ -8,11 +8,12 @@ set(CMAKE_C_EXTENSIONS OFF)
 
 add_library(DataStructures
     "src/BaseOpenHashTable.c"
+    "src/BaseDoubleList.c"    
     "src/BaseVector.c"
     "src/BaseBinHeap.c"
     "src/BaseCachePolicy.c"
     "src/DummyCache.c"
-#    "src/list.c"
+    "src/LRUCache.c"
 )
 target_include_directories(DataStructures 
     INTERFACE

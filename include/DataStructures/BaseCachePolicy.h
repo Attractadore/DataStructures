@@ -10,6 +10,7 @@ typedef struct BaseCachePolicy_T BaseCachePolicy;
 
 typedef enum {
     CACHE_ALGORITHM_DUMMY,
+    CACHE_ALGORITHM_LRU,
     CACHE_ALGORITHM_INVALID,
 } CacheAlgorithm;
 
