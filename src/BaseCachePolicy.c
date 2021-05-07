@@ -55,14 +55,14 @@ BaseCachePolicy* baseCachePolicyAlloc(const size_t capacity, const size_t key_si
             cache_policy->free_func = (BaseCacheFreeFunc) dummyCacheFree;
             return cache_policy;
         case CACHE_ALGORITHM_LRU:
-            cache_policy->cache = lruCacheAlloc(capacity, key_size, hash_func, compare_func);
+            cache_policy->cache = lruCacheAlloc(capacity, key_size, key_align, hash_func, compare_func);
             if (!cache_policy->cache) {
                 free(cache_policy);
                 return NULL;
             }
-            cache_policy->add_func = (BaseCacheAddFunc)lruCacheAddorReplace;
-            cache_policy->contains_func = (BaseCacheContainsFunc)lruCacheContains;
-            cache_policy->free_func = (BaseCacheFreeFunc)lruCacheFree;
+            cache_policy->add_func = (BaseCacheAddFunc) lruCacheAddorReplace;
+            cache_policy->contains_func = (BaseCacheContainsFunc) lruCacheContains;
+            cache_policy->free_func = (BaseCacheFreeFunc) lruCacheFree;
             return cache_policy;
         case CACHE_ALGORITHM_INVALID:
             return NULL;

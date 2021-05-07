@@ -1,9 +1,9 @@
+// This is an internal implementation header -- use OpenHashTable.h instead
 #pragma once
 
 #include "BaseFunc.h"
 
 #include <stddef.h>
-#include <stdint.h>
 
 typedef struct BaseOHT_T BaseOHT;
 
