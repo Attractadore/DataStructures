@@ -126,20 +126,23 @@ void doubleListShowList(DoubleList* list, TypeOfValue type) {
 /*------------------------------------------------------------------------------------------------------------------------------*/
 DoubleListNode* doubleListRemove(DoubleList* list, DoubleListNode* node) {
     assert(node && "Error: node == nullptr");
-    if (node->prev == NULL) {
+
+    if (node->prev) {
+        node->prev->next = node->next;
+    } else {
         list->start = node->next;
-        node->next->prev = NULL;
-        return node;
     }
-    if (node->next == NULL) {
+
+    if (node->next) {
+        node->next->prev = node->prev;
+    } else {
         list->end = node->prev;
-        node->prev->next = NULL;
-        return node;
     }
-    node->prev->next = node->next;
-    node->next->prev = node->prev;
-    node->next = NULL;
+
     node->prev = NULL;
+    node->next = NULL;
+    list->length--;
+
     return node;
 }
 
@@ -149,14 +152,20 @@ void doubleListDelete(DoubleList* list, DoubleListNode* node) {
 }
 /*------------------------------------------------------------------------------------------------------------------------------*/
 size_t doubleListSize(DoubleList const* list) {
+    assert(list);
+
     return list->length;
 }
 /*------------------------------------------------------------------------------------------------------------------------------*/
 void const* doubleListNodeConstData(DoubleListNode const* node) {
+    assert(node);
+
     return node->data;
 }
 /*------------------------------------------------------------------------------------------------------------------------------*/
 DoubleListNode const* doubleListConstBack(DoubleList const* list) {
+    assert(list);
+
     return list->end;
 }
 /*------------------------------------------------------------------------------------------------------------------------------*/
