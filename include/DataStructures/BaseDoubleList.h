@@ -24,10 +24,10 @@ DoubleListNode* doubleListPopBack(DoubleList* list); //+
 DoubleListNode* doubleListMoveToFront(DoubleList* list, DoubleListNode* node); //+
 
 // doubleListSize - returns current length of list
-size_t doubleListSize(DoubleList* list);
+size_t doubleListSize(DoubleList const* list);
 // doubleListNodeData - returns data from node
-void const* doubleListNodeData(DoubleListNode* node);
+void const* doubleListNodeData(DoubleListNode const* node);
 // doubleListBack - returns node from end of the list
-DoubleListNode* doubleListBack(DoubleList* list);
+DoubleListNode* doubleListBack(DoubleList const* list);
 // doubleListItemSize - returns size of elements from list
-size_t doubleListItemSize(DoubleList* list);
+size_t doubleListItemSize(DoubleList const* list);

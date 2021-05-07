@@ -1,87 +1,78 @@
+#include "LRUCache.h"
+
 #include "BaseDoubleList.h"
 #include "BaseOpenHashTable.h"
-#include "BaseVector.h"
-#include "LRUCache.h"
+
+#include <stdlib.h>
+#include <string.h>
+#include <stdalign.h>
 
 struct LRUCache_T {
 	BaseOHT* table;
-	BaseVector* vector;
 	DoubleList* list;
+	size_t capacity;
 };
 /*------------------------------------------------------------------------------------------------------------------------------*/
-LRUCache* LRUCacheAlloc(size_t element_size, size_t element_align, size_t value_size, size_t value_align, BaseHashFunc hash_func, BaseCompareFunc compare_func)
+LRUCache* lruCacheAlloc(size_t capacity, size_t element_size, size_t element_align, BaseHashFunc hash_func, BaseCompareFunc compare_func)
 {
 	LRUCache* LRU = calloc(1, sizeof(*LRU));
-	LRU->table = baseOHTInit(element_size, element_align, value_size, value_align, hash_func, compare_func);
-	LRU->vector = baseVectorAlloc(element_size);
+	if (!LRU)
+		return NULL;
+	LRU->capacity = capacity;
+	LRU->table = baseOHTInit(element_size, element_align, sizeof(DoubleListNode*), alignof(DoubleListNode*), hash_func, compare_func);
+	if (!LRU->table) {
+		lruCacheFree(LRU);
+		return NULL;
+	}
 	LRU->list = doubleListAlloc(element_size);
+	if (!LRU->list) {
+		lruCacheFree(LRU);
+		return NULL;
+	}
 	return LRU;
 }
 /*------------------------------------------------------------------------------------------------------------------------------*/
-/*uint64_t LRU_hash_func(void const* key) // for ints, silly
-{
-	uint64_t hash = *((uint64_t*)key); // in demo.c lies normal hash_func...
-	return hash;
-}*/
-/*------------------------------------------------------------------------------------------------------------------------------*/
-/*bool LRU_hash_cmp(void const* left_key, void const* right_key)
-{
-	return left_key == right_key;
-}*/
-/*------------------------------------------------------------------------------------------------------------------------------*/
-void LRUCache(size_t element_size, size_t element_align, size_t value_size, size_t value_align, BaseHashFunc hash_func, BaseCompareFunc compare_func)
-{
-	LRUCache* LRU = LRUCacheAlloc(element_size, element_align, value_size, value_align, hash_func, compare_func));
-	while (baseVectorGetSize((BaseVector const*)LRU->vector) > 0) {
-		LRUstep(LRU);
-	}
+bool lruCacheContains(LRUCache const* LRU, void const* key)
+{	
+	return baseOHTFind(LRU->table, key);
 }
 /*------------------------------------------------------------------------------------------------------------------------------*/
-void LRUCacheStep(LRUCache* LRU)
+CachePolicyAddResult lruCacheAddorReplace(LRUCache* LRU, void const* key, void* replace)
 {
-	void const* new_element = LRUgetNextData(LRU);
-	DoubleListNode* position = LRUsearchDoubleList(LRU, new_element);
-	if (position) {
-		// extern data from position and show it
-		doubleListMoveToFront(LRU->list, position);
-	}
-	else {
-		while (0) {// check if there is enough space in memory, free from end if no
-			doubleListPopBack(LRU->list);
-		}
-		doubleListAddFront(LRU->list, (const void*)new_element); // need fix const void void const...
-	// show data from new_element
-	}
-}
-/*------------------------------------------------------------------------------------------------------------------------------*/
-DoubleListNode* LRUsearchInDoubleList(LRUCache* LRU, void const* key)// get hash
-{
-	return (DoubleListNode*)baseOHTFindOrInsert(LRU->table, key); // baseOHTFindOrInsert
-}
-/*------------------------------------------------------------------------------------------------------------------------------*/
-void const* LRUgetNextData(LRUCache* LRU)
-{
-	return baseVectorConstData((BaseVector const*)LRU->vector);
-}
-/*------------------------------------------------------------------------------------------------------------------------------*/
-bool lruCacheContains(LRUCache* LRU, void const* key)
-{
-	DoubleListNode* tmp = (DoubleListNode*)baseOHTFind(LRU->table, key); // returns NULL if failed to find
-	if (tmp) {
-		doubleListMoveToFront(tmp); // may be this shouldnt be here
-		return 0;
-	}
-	return 1; 
-}
-/*------------------------------------------------------------------------------------------------------------------------------*/
-CachePolicyAddResult lruCacheAdd(LRUCache* LRU, void const* key, void const* replace)
-{
-	if (replace/*isnt enough space*/) {
+	if (LRU->capacity == doubleListSize(LRU->list)) {
+
+		DoubleListNode* old_end = doubleListBack(LRU->list);
+		void const* old_data = doubleListNodeData(old_end);
+		memcpy(replace, old_data, doubleListItemSize(LRU->list));
+		baseOHTDelete(LRU->table, old_data);
+		
 		doubleListPopBack(LRU->list);
-		void baseOHTDelete(LRU->table, key);
+
+		if (lruCacheAdd(LRU, key) == CACHE_POLICY_ADD_ERROR)
+			return CACHE_POLICY_ADD_ERROR;
 		return CACHE_POLICY_ADD_REPLACE;
 	}
-	void* baseOHTInsert(LRU->table, key, doubleListAddFront(LRU->list, key);
+
+	return lruCacheAdd(LRU, key);
+}
+/*------------------------------------------------------------------------------------------------------------------------------*/
+CachePolicyAddResult lruCacheAdd(LRUCache* LRU, void const* key) 
+{
+	void const* val = doubleListAddFront(LRU->list, key);
+	if (val == NULL)
+		return CACHE_POLICY_ADD_ERROR;
+	void* result = baseOHTInsert(LRU->table, key, val);
+	if (result == NULL)
+		return CACHE_POLICY_ADD_ERROR;
+
 	return CACHE_POLICY_ADD_NO_REPLACE;
+}
+/*------------------------------------------------------------------------------------------------------------------------------*/
+void lruCacheFree(LRUCache* LRU)
+{
+	baseOHTFree(LRU->table);
+	doubleListFree(LRU->list);
+
+	free(LRU);
 }
 /*------------------------------------------------------------------------------------------------------------------------------*/

@@ -1,9 +1,10 @@
 //BaseDoubleList realisation
+#include "BaseDoubleList.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
-#include "BaseDoubleList.h"
 
 struct DoubleListNode_T {
 	DoubleListNode* next;
