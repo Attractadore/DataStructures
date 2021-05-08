@@ -16,6 +16,7 @@ LRUCache* lruCacheAlloc(size_t capacity, size_t element_size, size_t element_ali
     LRUCache* LRU = calloc(1, sizeof(*LRU));
     if (!LRU)
         return NULL;
+
     LRU->capacity = capacity;
     LRU->table = baseOHTInit(element_size, element_align, sizeof(DoubleListNode*), alignof(DoubleListNode*), hash_func, compare_func);
     if (!LRU->table) {
@@ -35,6 +36,12 @@ bool lruCacheContains(LRUCache const* LRU, void const* key) {
 }
 /*------------------------------------------------------------------------------------------------------------------------------*/
 CachePolicyAddResult lruCacheAddorReplace(LRUCache* LRU, void const* key, void* replace) {
+    DoubleListNode* node = baseOHTFind(LRU->table, key);
+    if (node) {
+        doubleListMoveToFront(LRU, node);
+        return CACHE_POLICY_ADD_NO_REPLACE;
+    }
+
     if (LRU->capacity == doubleListSize(LRU->list)) {
         DoubleListNode const* old_end = doubleListConstBack(LRU->list);
         void const* old_data = doubleListNodeConstData(old_end);

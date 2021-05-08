@@ -39,7 +39,7 @@ DoubleList* doubleListAlloc(size_t key_size) {
     list->key_size = key_size;
 
     return list;
-}
+}  
 /*------------------------------------------------------------------------------------------------------------------------------*/
 DoubleListNode* doubleListAddFront(DoubleList* list, void const* value) {
     DoubleListNode* node = calloc(1, sizeof(DoubleListNode) + list->key_size);
