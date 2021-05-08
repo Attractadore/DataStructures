@@ -8,12 +8,12 @@ set(CMAKE_C_EXTENSIONS OFF)
 
 add_library(DataStructures
     "src/BaseOpenHashTable.c"
-    "src/BaseDoubleList.c"    
+    "src/BaseDoubleList.c"
+    "src/BaseMonoList.c"
     "src/BaseVector.c"
     "src/BaseBinHeap.c"
     "src/BaseCachePolicy.c"
     "src/DummyCache.c"
-    "src/LRUCache.c"
 )
 target_include_directories(DataStructures 
     INTERFACE
@@ -41,6 +41,7 @@ install(
     "include/DataStructures/CachePolicyAddResult.h"
     "include/DataStructures/CachePolicy.h"
     "include/DataStructures/BaseDoubleList.h"
+    "include/DataStructures/BaseMonoList.h"
     DESTINATION
     "include/DataStructures"
 )
