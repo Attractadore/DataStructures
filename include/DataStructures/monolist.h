@@ -16,4 +16,10 @@ MonoListNode* monoListRemoveNext(MonoList* ml, MonoListNode* prenode);
 MonoListNode* monoListDeleteNext(MonoList* ml, MonoListNode* prenode);
 MonoListNode* monoListAppend(MonoList* ml, MonoListNode* node);
 MonoListNode* monoListPrepend(MonoList* ml, MonoListNode* node);
+MonoListNode* Front(MonoList* ml);
+MonoListNode* Back(MonoList* ml);
+unsigned char* Data(MonoList* ml);
+MonoListNode const* ConstFront(MonoList const* ml);
+MonoListNode const* ConstBack(MonoList const* ml);
+unsigned char const* ConstData(MonoList const* ml);
 
