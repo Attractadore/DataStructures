@@ -171,12 +171,12 @@ void const* monoListConstNodeData(MonoListNode const* node) {
     return node->data;
 }
 
-size_t* monoListItemSize(MonoList* ml) {
+size_t monoListItemSize(MonoList* ml) {
     assert(ml && "the list is not defined");
     return ml->key_size;
 }
 
-size_t* monoListSize(MonoList* ml) {
+size_t monoListSize(MonoList* ml) {
     assert(ml && "the list is not defined");
     return ml->length;
 }
