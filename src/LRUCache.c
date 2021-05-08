@@ -16,6 +16,7 @@ LRUCache* lruCacheAlloc(size_t capacity, size_t element_size, size_t element_ali
     LRUCache* LRU = calloc(1, sizeof(*LRU));
     if (!LRU)
         return NULL;
+
     LRU->capacity = capacity;
     LRU->table = baseOHTInit(element_size, element_align, sizeof(DoubleListNode*), alignof(DoubleListNode*), hash_func, compare_func);
     if (!LRU->table) {
