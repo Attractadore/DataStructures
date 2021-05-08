@@ -2,7 +2,7 @@
 #include <stddef.h>
 
 typedef struct MonoList_T MonoList;
-typedef struct mononode_t MonoListNode;
+typedef struct MonoListNode_t MonoListNode;
 
 MonoList* monoListAlloc(size_t key_size);
 void monoListFree(MonoList* ml);
@@ -14,12 +14,11 @@ MonoListNode* monoListMoveNextToFront(MonoList* ml, MonoListNode* prenode);
 MonoListNode* monoListMoveNextToBack(MonoList* ml, MonoListNode* prenode);
 MonoListNode* monoListRemoveNext(MonoList* ml, MonoListNode* prenode);
 MonoListNode* monoListDeleteNext(MonoList* ml, MonoListNode* prenode);
-MonoListNode* monoListAppend(MonoList* ml, MonoListNode* node);
-MonoListNode* monoListPrepend(MonoList* ml, MonoListNode* node);
-MonoListNode* Front(MonoList* ml);
-MonoListNode* Back(MonoList* ml);
-unsigned char* Data(MonoList* ml);
-MonoListNode const* ConstFront(MonoList const* ml);
-MonoListNode const* ConstBack(MonoList const* ml);
-unsigned char const* ConstData(MonoList const* ml);
-
+MonoListNode* monoListFront(MonoList* ml);
+MonoListNode* monoListBack(MonoList* ml);
+size_t* monoListSize(MonoList* ml);
+size_t* monoListItemSize(MonoList* ml);
+void* monoListNodeData(MonoListNode* node);
+MonoListNode const* monoListConstFront(MonoList const* ml);
+MonoListNode const* monoListConstBack(MonoList const* ml);
+void const* monoListConstNodeData(MonoListNode const* node);
