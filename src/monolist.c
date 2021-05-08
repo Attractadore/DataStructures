@@ -145,34 +145,41 @@ MonoListNode* monoListPrepend(MonoList* ml, MonoList* node) {
         ml->end = node;
     return ml->start;
 }
-MonoListNode* Front(MonoList* ml) {
+
+MonoListNode* monoListFront(MonoList* ml) {
     assert(ml && "the list is not defined");
     return ml->start;
 }
-MonoListNode* Back(MonoList* ml) {
+MonoListNode* monoListBack(MonoList* ml) {
     assert(ml && "the list is not defined");
     return ml->end;
 }
-unsigned char* Data(MonoList* ml) {
-    assert(ml && "the list is not defined");
+void* monoListNodeData(MonoListNode* node) {
+    assert(node && "the node is not defined");
     return ml->data;
 }
-MonoListNode const* ConstFront(MonoList const* ml) {
+MonoListNode const* monoListConstFront(MonoList const* ml) {
     assert(ml && "the list is not defined");
     return ml->start;
 }
-MonoListNode const* ConstBack(MonoList const* ml) {
+MonoListNode const* monoListConstBack(MonoList const* ml) {
     assert(ml && "the list is not defined");
     return ml->end;
 }
-unsigned char const* ConstData(MonoList const* ml) {
-    assert(ml && "the list is not defined");
-    return ml->data;
+void const* monoListConstNodeData(MonoListNode const* node) {
+    assert(node && "the node is not defined");
+    return node->data;
 }
 
+size_t* monoListItemSize(MonoList* ml) {
+    assert(ml && "the list is not defined");
+    return ml->key_size;
+}
 
-
-
+size_t* monoListSize(MonoList* ml) {
+    assert(ml && "the list is not defined");
+    return ml->length;
+}
 
 
 
