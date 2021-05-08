@@ -1,5 +1,6 @@
 #include "BaseCachePolicy.h"
 #include "DummyCache.h"
+#include "LRUCache.h"
 
 #include <assert.h>
 #include <stdlib.h>
@@ -19,6 +20,7 @@ struct BaseCachePolicy_T {
 char const* const cacheAlgorithmNames[CACHE_ALGORITHM_INVALID] =
     {
         [CACHE_ALGORITHM_DUMMY] = "Dummy",
+        [CACHE_ALGORITHM_LRU] = "LRU",
 };
 
 CacheAlgorithm getCacheAlgorithm(char const* const algorithm_str) {
@@ -33,8 +35,8 @@ CacheAlgorithm getCacheAlgorithm(char const* const algorithm_str) {
     return CACHE_ALGORITHM_INVALID;
 }
 
-BaseCachePolicy* baseCachePolicyAlloc(const size_t capacity, const size_t key_size, const BaseHashFunc hash_func, const BaseCompareFunc compare_func, const CacheAlgorithm algorithm) {
-    assert(capacity && key_size && hash_func && compare_func && algorithm);
+BaseCachePolicy* baseCachePolicyAlloc(const size_t capacity, const size_t key_size, const size_t key_align, const BaseHashFunc hash_func, const BaseCompareFunc compare_func, const CacheAlgorithm algorithm) {
+    assert(capacity && key_size && key_align && hash_func && compare_func);
 
     BaseCachePolicy* const cache_policy = calloc(1, sizeof(*cache_policy));
     if (!cache_policy) {
@@ -51,6 +53,16 @@ BaseCachePolicy* baseCachePolicyAlloc(const size_t capacity, const size_t key_si
             cache_policy->add_func = (BaseCacheAddFunc) dummyCacheAdd;
             cache_policy->contains_func = (BaseCacheContainsFunc) dummyCacheContains;
             cache_policy->free_func = (BaseCacheFreeFunc) dummyCacheFree;
+            return cache_policy;
+        case CACHE_ALGORITHM_LRU:
+            cache_policy->cache = lruCacheAlloc(capacity, key_size, key_align, hash_func, compare_func);
+            if (!cache_policy->cache) {
+                free(cache_policy);
+                return NULL;
+            }
+            cache_policy->add_func = (BaseCacheAddFunc) lruCacheAddorReplace;
+            cache_policy->contains_func = (BaseCacheContainsFunc) lruCacheContains;
+            cache_policy->free_func = (BaseCacheFreeFunc) lruCacheFree;
             return cache_policy;
         case CACHE_ALGORITHM_INVALID:
             return NULL;

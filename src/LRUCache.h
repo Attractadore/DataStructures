@@ -1,22 +1,21 @@
 #pragma once
 
-#include "BaseDoubleList.h"
-#include "BaseOpenHashTable.h"
-#include "BaseVector.h"
+#include "BaseFunc.h"
+#include "CachePolicyAddResult.h"
+
+#include <stdbool.h>
+#include <stddef.h>
 
 typedef struct LRUCache_T LRUCache;
 
-// LRUCacheAlloc - create LRUCache structure with hash_table, vector, double_list
-LRUCache* LRUCacheAlloc(size_t element_size, ...);// +-
+// LRUCacheAlloc - create LRUCache structure with hash_table, double_list, capacity
+LRUCache* lruCacheAlloc(size_t capacity, size_t element_size, size_t element_align, BaseHashFunc hash_func, BaseCompareFunc compare_func);
+// lruCacheFree - free LRU
+void lruCacheFree(LRUCache* LRU);
 
-// LRUsearch - search element in cache, returns its pointer or NULL
-DoubleListNode* LRUsearchDoubleList(LRUCache* LRU, void const* key);// +
-
-// LRU - ...
-void LRU(void); // dont know what to send 
-
-// LRUstep - step of LRU algorithm
-void LRUstep(LRUCache* LRU); // +-
-
-// LRUgetNextData - returns next element from LRU->vector
-void const* LRUgetNextData(LRUCache* LRU); // +-
+// lruCacheAddorReplace - adds key into cash and tells wich one was removed from cache
+CachePolicyAddResult lruCacheAddorReplace(LRUCache* LRU, void const* key, void* replace);
+// lruCacheAdd - adds key into cache
+CachePolicyAddResult lruCacheAdd(LRUCache* LRU, void const* key);
+// lruCacheContains - check if the key should added to cache, returns 1 if yes
+bool lruCacheContains(LRUCache const* LRU, void const* key);
