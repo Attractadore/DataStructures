@@ -11,6 +11,7 @@ add_library(DataStructures
     "src/BaseVector.c"
     "src/BaseCachePolicy.c"
     "src/DummyCache.c"
+    "src/BaseMonoList.c"
 #    "src/list.c"
 )
 target_include_directories(DataStructures 
@@ -38,6 +39,7 @@ install(
     "include/DataStructures/CachePolicyAddResult.h"
     "include/DataStructures/CachePolicy.h"
     "include/DataStructures/BaseDoubleList.h"
+    "include/DataStructures/BaseMonoList.h"
     DESTINATION
     "include/DataStructures"
 )
