@@ -8,11 +8,12 @@ set(CMAKE_C_EXTENSIONS OFF)
 
 add_library(DataStructures
     "src/BaseOpenHashTable.c"
+    "src/BaseDoubleList.c"
+    "src/BaseMonoList.c"
     "src/BaseVector.c"
+    "src/BaseBinHeap.c"
     "src/BaseCachePolicy.c"
     "src/DummyCache.c"
-    "src/BaseMonoList.c"
-#    "src/list.c"
 )
 target_include_directories(DataStructures 
     INTERFACE
@@ -29,12 +30,13 @@ install(
 
 install(
     FILES
-    "include/DataStructures/BaseCompareFunc.h"
-    "include/DataStructures/BaseHashFunc.h"
+    "include/DataStructures/BaseFunc.h"
     "include/DataStructures/BaseOpenHashTable.h"
     "include/DataStructures/OpenHashTable.h"
     "include/DataStructures/BaseVector.h"
     "include/DataStructures/Vector.h"
+    "include/DataStructures/BaseBinHeap.h"
+    "include/DataStructures/BinHeap.h"
     "include/DataStructures/BaseCachePolicy.h"
     "include/DataStructures/CachePolicyAddResult.h"
     "include/DataStructures/CachePolicy.h"

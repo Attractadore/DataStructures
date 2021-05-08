@@ -30,18 +30,17 @@ typedef bool (*CACHE_POLICY_COMPARE_FUNC)(CACHE_POLICY_TYPE const*, CACHE_POLICY
 
 typedef struct CACHE_POLICY_UPPER_IDENTIFIER(_T) CACHE_POLICY_NAME;
 
-// cachePolicyAlloc: Allocate a new cache policy manager
+// cachePolicyAlloc: Allocate a new cache policy manager.
 static inline CACHE_POLICY_NAME* CACHE_POLICY_LOWER_IDENTIFIER(Alloc)(size_t capacity, const CACHE_POLICY_HASH_FUNC hash_func, const CACHE_POLICY_COMPARE_FUNC compare_func, const CacheAlgorithm algorithm) {
-    return (CACHE_POLICY_NAME*) baseCachePolicyAlloc(capacity, sizeof(CACHE_POLICY_TYPE), (BaseHashFunc) hash_func, (BaseCompareFunc) compare_func, algorithm);
+    return (CACHE_POLICY_NAME*) baseCachePolicyAlloc(capacity, sizeof(CACHE_POLICY_TYPE), _Alignof(CACHE_POLICY_TYPE), (BaseHashFunc) hash_func, (BaseCompareFunc) compare_func, algorithm);
 }
 
-// cachePolicyFree: Free a cache policy manager
+// cachePolicyFree: Free a cache policy manager.
 static inline void CACHE_POLICY_LOWER_IDENTIFIER(Free)(CACHE_POLICY_NAME* const cache_policy) {
     baseCachePolicyFree((BaseCachePolicy*) cache_policy);
 }
 
-// cachePolicyContains: Check if a key should be currently
-// cached
+// cachePolicyContains: Check if a key should be currently cached.
 static inline bool CACHE_POLICY_LOWER_IDENTIFIER(Contains)(CACHE_POLICY_NAME const* const cache_policy, CACHE_POLICY_TYPE const key) {
     return baseCachePolicyContains((BaseCachePolicy const*) cache_policy, &key);
 }
