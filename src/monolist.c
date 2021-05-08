@@ -145,6 +145,33 @@ MonoListNode* monoListPrepend(MonoList* ml, MonoList* node) {
         ml->end = node;
     return ml->start;
 }
+MonoListNode* Front(MonoList* ml) {
+    assert(ml && "the list is not defined");
+    return ml->start;
+}
+MonoListNode* Back(MonoList* ml) {
+    assert(ml && "the list is not defined");
+    return ml->end;
+}
+unsigned char* Data(MonoList* ml) {
+    assert(ml && "the list is not defined");
+    return ml->data;
+}
+MonoListNode const* ConstFront(MonoList const* ml) {
+    assert(ml && "the list is not defined");
+    return ml->start;
+}
+MonoListNode const* ConstBack(MonoList const* ml) {
+    assert(ml && "the list is not defined");
+    return ml->end;
+}
+unsigned char const* ConstData(MonoList const* ml) {
+    assert(ml && "the list is not defined");
+    return ml->data;
+}
+
+
+
 
 
 
