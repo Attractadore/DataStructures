@@ -36,8 +36,8 @@ bool lruCacheContains(LRUCache const* LRU, void const* key) {
 }
 /*------------------------------------------------------------------------------------------------------------------------------*/
 CachePolicyAddResult lruCacheAddorReplace(LRUCache* LRU, void const* key, void* replace) {
-    if (lruCacheContains(LRU, key)) {
-        DoubleListNode* node = baseOHTFind(LRU->table, key);
+    DoubleListNode* node = baseOHTFind(LRU->table, key);
+    if (node) {
         doubleListMoveToFront(LRU, node);
         return CACHE_POLICY_ADD_NO_REPLACE;
     }
