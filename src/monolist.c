@@ -36,15 +36,7 @@ MonoListNode* monoListAddToFront(MonoList* ml, void const* value) {
     if (newstart == NULL)
         return NULL;
     memcpy(newstart->data, value, ml->key_size);
-    ml->length++;
-    if (ml->start == NULL) {
-        ml->start = newstart;
-        ml->end = ml->start;
-        return ml->start;
-    }
-    newstart->next = ml->start;
-    ml->start = newstart;
-    return ml->start;
+    return monoListPrepend(ml, newstart);
 }
 
 MonoListNode* monoListAddToBack(MonoList* ml, void const* value) {
@@ -53,16 +45,7 @@ MonoListNode* monoListAddToBack(MonoList* ml, void const* value) {
     if (newend == NULL)
         return NULL;
     memcpy(newend->data, value, ml->key_size);
-    ml->length++;
-    newend->next = NULL;
-    if (ml->end = NULL) {
-        ml->start = newend;
-        ml->end = newend;
-        return ml->end;
-    }
-    ml->end->next = newend;
-    ml->end = newend;
-    return ml->end;
+    return monoListAppend(ml, newend);
 }
 
 MonoListNode* monoListPopBack(MonoList* ml) { //not sure if the old end should be deleted here
@@ -103,23 +86,13 @@ MonoListNode* monoListPopFront(MonoList* ml) {
 }
 
 MonoListNode* monoListMoveNextToFront(MonoList* ml, MonoListNode* prenode) {
-    assert(ml && "the list is not defined");
     assert(prenode && "the previous node is not defined");
-    ml->length++;
-    MonoListNode* node = monoListRemove(ml, prenode);
-    node->next = ml->start;
-    ml->start = node;
-    return ml->start;
+    return monoListPrepend(ml, monoListRemoveNext(ml, prenode));
 }
 
 MonoListNode* monoListMoveNextToBack(MonoList* ml, MonoListNode* prenode) {
-    assert(ml && "the list is not defined");
     assert(prenode && "the previous node is not defined");
-    ml->length++;
-    MonoListNode* node = monoListRemove(ml, prenode);
-    ml->end->next = node;
-    ml->end = node;
-    return ml->end;
+    return monoListAppend(ml, monoListRemoveNext(ml, prenode));
 }
 
 MonoListNode* monoListRemoveNext(MonoList* ml, MonoListNode* prenode) {
@@ -135,7 +108,7 @@ MonoListNode* monoListRemoveNext(MonoList* ml, MonoListNode* prenode) {
 
 MonoList* monoListAlloc(size_t key_size) {
     MonoList* newlist = calloc(1, sizeof(MonoList));
-    if (newlist = NULL)
+    if (newlist == NULL)
         return NULL;
     newlist->key_size = key_size;
     return newlist;
@@ -143,11 +116,8 @@ MonoList* monoListAlloc(size_t key_size) {
 
 MonoListNode* monoListDeleteNext(MonoList* ml, MonoListNode* prenode) {
     assert (prenode->next && "there is nothing to delete");
-    MonoListNode* nextnode = prenode->next->next;
-    free(prenode->next);
-    prenode->next = nextnode;
-    ml->length--;
-    return nextnode;
+    free(monoListRemoveNext(ml, prenode));
+    return prenode->next;
 }
 
 MonoListNode* monoListAppend(MonoList* ml, MonoListNode* node) {
@@ -175,8 +145,6 @@ MonoListNode* monoListPrepend(MonoList* ml, MonoList* node) {
         ml->end = node;
     return ml->start;
 }
-
-
 
 
 
