@@ -41,7 +41,7 @@ MonoListNode* monoListAddToFront(MonoList* ml, void const* value) {
 
 MonoListNode* monoListAddToBack(MonoList* ml, void const* value) {
     assert(ml && "the list is not defined");
-    MonoListNode* newend = calloc(1,sizeof(MonoleListNode) + ml->key_size);
+    MonoListNode* newend = calloc(1,sizeof(MonoListNode) + ml->key_size);
     if (newend == NULL)
         return NULL;
     memcpy(newend->data, value, ml->key_size);
@@ -86,11 +86,13 @@ MonoListNode* monoListPopFront(MonoList* ml) {
 }
 
 MonoListNode* monoListMoveNextToFront(MonoList* ml, MonoListNode* prenode) {
+    assert(ml && "the list is not defined");
     assert(prenode && "the previous node is not defined");
     return monoListPrepend(ml, monoListRemoveNext(ml, prenode));
 }
 
 MonoListNode* monoListMoveNextToBack(MonoList* ml, MonoListNode* prenode) {
+    assert(ml && "the list is not defined");
     assert(prenode && "the previous node is not defined");
     return monoListAppend(ml, monoListRemoveNext(ml, prenode));
 }
@@ -135,7 +137,7 @@ MonoListNode* monoListAppend(MonoList* ml, MonoListNode* node) {
     return ml->end;
 }
 
-MonoListNode* monoListPrepend(MonoList* ml, MonoList* node) {
+MonoListNode* monoListPrepend(MonoList* ml, MonoListNode* node) {
     assert(ml && "the list is not defined");
     assert(node && "the node is not defined");
     ml->length++;
@@ -156,7 +158,7 @@ MonoListNode* monoListBack(MonoList* ml) {
 }
 void* monoListNodeData(MonoListNode* node) {
     assert(node && "the node is not defined");
-    return ml->data;
+    return node->data;
 }
 MonoListNode const* monoListConstFront(MonoList const* ml) {
     assert(ml && "the list is not defined");
@@ -171,15 +173,14 @@ void const* monoListConstNodeData(MonoListNode const* node) {
     return node->data;
 }
 
-size_t monoListItemSize(MonoList* ml) {
-    assert(ml && "the list is not defined");
+size_t* monoListItemSize(MonoList* ml) {
     return ml->key_size;
 }
 
-size_t monoListSize(MonoList* ml) {
-    assert(ml && "the list is not defined");
+size_t* monoListSize(MonoList* ml) {
     return ml->length;
 }
+
 
 
 
