@@ -173,11 +173,11 @@ void const* monoListConstNodeData(MonoListNode const* node) {
     return node->data;
 }
 
-size_t* monoListItemSize(MonoList* ml) {
+size_t monoListItemSize(MonoList* ml) {
     return ml->key_size;
 }
 
-size_t* monoListSize(MonoList* ml) {
+size_t monoListSize(MonoList* ml) {
     return ml->length;
 }
 
