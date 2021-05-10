@@ -38,5 +38,5 @@ MonoListNode const* monoListConstFront(MonoList const* ml);
 //here and further - the same, but everything is const
 MonoListNode const* monoListConstBack(MonoList const* ml);
 void const* monoListConstNodeData(MonoListNode const* node);
-MonoListNode* monoListPrepend(MonoList* ml, MonoList* node);
-MonoListNode* monoListAppend(MonoList* ml, MonoList* node);
+MonoListNode* monoListPrepend(MonoList* ml, MonoListNode* node);
+MonoListNode* monoListAppend(MonoList* ml, MonoListNode* node);
