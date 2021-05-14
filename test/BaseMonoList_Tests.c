@@ -1,6 +1,6 @@
-// DoubleList tests
+// MonoList tests
 #include <stdlib.h>
-#include "BaseDoubleList.c"
+#include "BaseMonoList.c"
 
 //typedef enum type TypeOfValue, for tests
 typedef enum type {
@@ -11,15 +11,15 @@ typedef enum type {
     TYPE_OF_VALUE_STRING,
 } TypeOfValue;
 
-// doubleListShowList - prints list, send as "type" const TYPE_OF_VALUE_"your type"
-void doubleListShowList(DoubleList* list, TypeOfValue type);
+// monoListShowList - prints list, send as "type" const TYPE_OF_VALUE_"your type"
+void monoListShowList(MonoList* list, TypeOfValue type);
 
-void doubleListShowList(DoubleList* list, TypeOfValue type)
+void monoListShowList(MonoList* list, TypeOfValue type)
 {
     if (list->start == NULL)
         printf("List is empty!\n");
     else {
-        DoubleListNode* tmp = list->start;
+        MonoListNode* tmp = list->start;
         while (tmp != NULL) {
             switch (type) {
             case TYPE_OF_VALUE_INT: {
@@ -52,11 +52,11 @@ void doubleListShowList(DoubleList* list, TypeOfValue type)
         printf("\n");
     }
 }
-/*------------------------------------------------------------------------------------------------------------------------------*/
+
 
 int main() {
     char* b = "qwertyuiopasdfghjkl";
-    DoubleList* list = doubleListAlloc(sizeof(b));
+    MonoList* list = monoListAlloc(sizeof(b));
     char* tmp = calloc(sizeof(b), sizeof(char));
     for (int i = 2; i < 8; i++) {
         int j = i;
@@ -65,28 +65,32 @@ int main() {
             j--;
         }
         tmp[i] = '\0';
-        doubleListAddFront(list, (const void*) (tmp));
+        monoListAddToFront(list, (const void*) (tmp));
     }
-    doubleListShowList(list, TYPE_OF_VALUE_STRING);
-
+    monoListShowList(list, TYPE_OF_VALUE_STRING);
+    MonoListNode* node = NULL;
     for (int i = 18; i > 15; i--) {
-        doubleListPopBack(list);
+        monoListPopBack(list);
         int j = i;
         while (j > 15) {
             tmp[i - j] = b[j];
             j--;
         }
         tmp[i - j] = '\0';
-        doubleListAddFront(list, (const void*) (tmp));
+        if(!node)
+            node = monoListAddToFront(list, (const void*) (tmp));
+        else
+            monoListAddToFront(list, (const void*)(tmp));
     }
-    doubleListShowList(list, TYPE_OF_VALUE_STRING);
+    monoListShowList(list, TYPE_OF_VALUE_STRING);
 
     for (int i = 0; i < 3; i++)
-        doubleListMoveToFront(list, list->end);
-    doubleListShowList(list, TYPE_OF_VALUE_STRING);
+        monoListMoveNextToFront(list, node);
+    monoListShowList(list, TYPE_OF_VALUE_STRING);
 
-    doubleListFree(list);
-    doubleListShowList(list, TYPE_OF_VALUE_STRING);
+    monoListFree(list);
+    monoListShowList(list, TYPE_OF_VALUE_STRING);
 
     return 0;
 }
+
