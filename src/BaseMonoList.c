@@ -107,6 +107,9 @@ MonoListNode* monoListRemoveNext(MonoList* ml, MonoListNode* prenode) {
     ml->length--;
     prenode->next = prenode->next->next;
     node->next = NULL;
+    if (node == ml->end) {
+        ml->end = prenode;
+    }
     return node;
 }
 
