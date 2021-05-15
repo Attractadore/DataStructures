@@ -15,6 +15,7 @@ add_library(DataStructures
     "src/BaseCachePolicy.c"
     "src/DummyCache.c"
     "src/LRUCache.c"
+    "src/LIRSCache.c"
 )
 target_include_directories(DataStructures 
     INTERFACE
