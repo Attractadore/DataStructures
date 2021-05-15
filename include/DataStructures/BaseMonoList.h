@@ -41,3 +41,4 @@ MonoListNode const* monoListConstBack(MonoList const* ml);
 void const* monoListConstNodeData(MonoListNode const* node);
 MonoListNode* monoListPrepend(MonoList* ml, MonoListNode* node);
 MonoListNode* monoListAppend(MonoList* ml, MonoListNode* node);
+MonoListNode* monoListNodeNext(MonoListNode* node);

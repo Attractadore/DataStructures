@@ -25,8 +25,9 @@ target_include_directories(DataStructures
 )
 
 install(
-    TARGETS DataStructures
+    TARGETS DataStructures 
     EXPORT DataStructuresTargets
+    ARCHIVE DESTINATION lib
 )
 
 install(

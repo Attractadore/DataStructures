@@ -183,6 +183,10 @@ size_t monoListSize(MonoList* ml) {
     return ml->length;
 }
 
+MonoListNode* monoListNodeNext(MonoListNode* node) {
+    return node->next;
+}
+
 
 
 
