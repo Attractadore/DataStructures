@@ -36,7 +36,6 @@ static void setPointer(uintptr_t* const data, MonoListNode const* node) {
     *data = *data ^ data_status;
 }
 
-static CachePolicyAddResult lirsCacheAddAsHIR(LIRSCache* LIRS, void const* key);
 static CachePolicyAddResult lirsCacheAddAsLIR(LIRSCache* LIRS, void const* key);
 static CachePolicyAddResult lirsCacheAddToQueue(LIRSCache* LIRS, void const* key);
 static CachePolicyAddResult lirsCacheAddToHIR(LIRSCache* LIRS, void const* key);
@@ -103,22 +102,21 @@ LIRSCache* lirsCacheAlloc(size_t capacity, size_t element_size, size_t element_a
         if (LIRS->hir_table) {
             LIRS->queue_list = monoListAlloc(element_size);
             if (LIRS->queue_list) {
-                // TODO: this is leaked
-                void* sent = calloc(1, element_size);
-                if (sent) {
-                    MonoListNode* queue_sentinel = monoListAddToFront(LIRS->queue_list, sent);
+                void* const zeroes = calloc(1, element_size);
+                if (zeroes) {
+                    MonoListNode* queue_sentinel = monoListAddToFront(LIRS->queue_list, zeroes);
                     if (queue_sentinel) {
                         LIRS->hir_list = monoListAlloc(element_size);
                         if (LIRS->hir_list) {
-                            MonoListNode* hir_sentinel = monoListAddToFront(LIRS->hir_list, sent);
+                            MonoListNode* hir_sentinel = monoListAddToFront(LIRS->hir_list, zeroes);
                             if (hir_sentinel) {
-                                free(sent);
+                                free(zeroes);
                                 return LIRS;
                             }
                         }
                     }
                 }
-                free(sent);
+                free(zeroes);
             }
         }
     }
@@ -179,17 +177,17 @@ static void lirsCachePrune(LIRSCache* LIRS) {
 CachePolicyAddResult lirsCacheAddOrReplace(LIRSCache* LIRS, void const* key, void* replace) {
     // When adding a key to the cache, the following can happen:
     // 1) This is a resident LIR block.
-    //    Move it to the front of the queue and prune the stack.
+    //    Move it to the front of the queue and prune the queue.
     // 2) This is a non-resident block.
     //    If the number of LIR blocks is less than the maximum amount,
     //    add it as a LIR block.
     //    If the number of HIR blocks is less the the maximum amount,
     //    add it as a HIR block and carry on.
-    //    Otherwise, evict a HIR block, add it as a HIR block and carry on.
+    //    Otherwise, evict a HIR block, add the key as a HIR block and carry on.
     // 3) This is a resident HIR block.
     //    If this block is present in the queue, move it to the front of the queue,
     //    promote it to a LIR block, demote the last block of the queue to a HIR block,
-    //    and prune the stack.
+    //    and prune the queue.
     //    If it is not present in the queue, and it to the queue.
     uintptr_t* queue_value = baseOHTFind(LIRS->queue_table, key);
     if (queue_value && isLIR(*queue_value)) {
@@ -327,17 +325,3 @@ static CachePolicyAddResult lirsCacheAddAsLIR(LIRSCache* LIRS, void const* key) 
     }
     return res;
 }
-/*------------------------------------------------------------------------------------------------------------------------------*/
-static CachePolicyAddResult lirsCacheAddAsHIR(LIRSCache* LIRS, void const* key) {
-    CachePolicyAddResult res = lirsCacheAddToQueue(LIRS, key);
-    if (res != CACHE_POLICY_ADD_ERROR) {
-        if (lirsCacheAddToHIR(LIRS, key) == CACHE_POLICY_ADD_ERROR) {
-            lirsCacheDeleteFromQueue(LIRS, key);
-            return CACHE_POLICY_ADD_ERROR;
-        }
-    }
-
-    return res;
-}
-/*------------------------------------------------------------------------------------------------------------------------------*/
-/*------------------------------------------------------------------------------------------------------------------------------*/
