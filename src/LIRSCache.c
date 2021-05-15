@@ -175,7 +175,7 @@ void lirsCacheStackPrune(LIRSCache* LIRS)
 /*------------------------------------------------------------------------------------------------------------------------------*/
 CachePolicyAddResult lirsCacheAddOrReplace(LIRSCache* LIRS, void const* key, void* replace)
 {
-    uintptr_t const* const node_prev_ptr = baseOHTFind(LIRS->full_table, key);
+    uintptr_t* node_prev_ptr = baseOHTFind(LIRS->full_table, key);
     if (node_prev_ptr) {
         if (lirsCacheIsLIR(*node_prev_ptr)) { // LIR
             lirsCacheMoveToFrontFull(LIRS, node_prev_ptr);
@@ -194,28 +194,27 @@ CachePolicyAddResult lirsCacheAddOrReplace(LIRSCache* LIRS, void const* key, voi
                 return res;
 
             }
+            // moveToFront in full_list node_prev_ptr as LIR, removes node_prev_ptr from hir_list
             lirsCacheToggleStatus(node_prev_ptr);
             MonoListNode* prev = lirsCacheGetPointer(*node_prev_ptr);
-            MonoListNode* next = monoListNodeNext(prev);
-            lirsCacheDeleteFromHIR(LIRS, monoListConstNodeData(next));
+            MonoListNode* cur = monoListNodeNext(prev);
+            lirsCacheDeleteFromHIR(LIRS, monoListConstNodeData(cur)); // not sure if it works
             lirsCacheMoveToFrontFull(LIRS, node_prev_ptr);
+            //
+
+            // add old_last_LIR in hir_list
             const void* old_last_LIR_data = monoListConstNodeData(monoListBack(LIRS->full_list));
             uintptr_t* old_last_LIR = baseOHTFind(LIRS->full_table, old_last_LIR_data);
             lirsCacheToggleStatus(old_last_LIR);
             lirsCacheAddToHIR(LIRS, old_last_LIR_data);
+            //
 
             lirsCacheStackPrune(LIRS);
 
         }
         return CACHE_POLICY_ADD_NO_REPLACE;
     }
-    MonoListNode* node_prev = baseOHTFind(LIRS->hir_table, key); // if non-resident
-    // шо дальше делать то
-    if (node_prev) {
-        // moveTofront of hir_list
-        lirsCacheMoveToFrontHIR(LIRS, node_prev);
-        return CACHE_POLICY_ADD_NO_REPLACE;
-    }
+    // MonoListNode* node_prev = baseOHTFind(LIRS->hir_table, key); // if non-resident
 
     if (LIRS->LIR_capacity > monoListSize(LIRS->full_list)) {
         return lirsCacheAddToLIR(LIRS, key);
