@@ -29,6 +29,10 @@ void lirsCacheDeleteFromHIR(LIRSCache* LIRS, void const* key);
 // lirsCachePopHIR - deletes last hir element from hir_list
 void lirsCachePopHIR(LIRSCache* LIRS, void* replace);
 
+// lirsCacheMoveToFrontHIR - moves node_prev->next to front of hir_list
+void lirsCacheMoveToFrontHIR(LIRSCache* LIRS, MonoListNode* node_prev);
+// lirsCacheMoveToFrontFull - moves prev_ptr->next to front of full_list
+void lirsCacheMoveToFrontFull(LIRSCache* LIRS, uintptr_t* prev_ptr);
 
 struct LIRSCache_T {
     BaseOHT* full_table;
@@ -38,7 +42,6 @@ struct LIRSCache_T {
     size_t capacity;
     size_t LIR_capacity;
     size_t HIR_capacity;
-    // solve sentiel problem
 };
 
 int main() {
@@ -128,7 +131,7 @@ bool lirsCacheContains(LIRSCache const* LIRS, void const* key)
     return baseOHTFind(LIRS->hir_table, key);
 }
 /*------------------------------------------------------------------------------------------------------------------------------*/
-void lirsCacheMoveToFront(LIRSCache* LIRS, uintptr_t* prev_ptr)
+void lirsCacheMoveToFrontFull(LIRSCache* LIRS, uintptr_t* prev_ptr)
 {
     MonoListNode* prev = lirsCacheGetPointer(*prev_ptr);
     MonoListNode* next = monoListNextNode(prev);
@@ -141,6 +144,21 @@ void lirsCacheMoveToFront(LIRSCache* LIRS, uintptr_t* prev_ptr)
     memcpy(node_prev_ptr, &old_front, sizeof(uintptr_t)); // check
 
     monoListMoveNextToFront(LIRS->full_list, prev);
+}
+/*------------------------------------------------------------------------------------------------------------------------------*/
+void lirsCacheMoveToFrontHIR(LIRSCache* LIRS, MonoListNode* node_prev)
+{
+    MonoListNode* next = monoListNextNode(node_prev);
+    assert(next);
+    MonoListNode** node_next_ptr = baseOHTFind(LIRS->hir_table, monoListConstNodeData(next));// check
+    assert(node_next_ptr);
+    memcpy(node_next_ptr, &node_prev, sizeof(uintptr_t));
+
+    MonoListNode* old_front = monoListFront(LIRS->hir_list);
+    MonoListNode** node_prev_ptr = baseOHTFind(LIRS->hir_table, monoListConstNodeData(next));
+    memcpy(node_prev_ptr, &old_front, sizeof(uintptr_t)); // check
+
+    monoListMoveNextToFront(LIRS->hir_list, node_prev);
 }
 /*------------------------------------------------------------------------------------------------------------------------------*/
 void lirsCacheStackPrune(LIRSCache* LIRS)
@@ -172,13 +190,12 @@ CachePolicyAddResult lirsCacheAddOrReplace(LIRSCache* LIRS, void const* key, voi
             uintptr_t old_front = (uintptr_t)monoListFront(LIRS->full_list);
             memcpy(node_prev_ptr, &old_front, sizeof(uintptr_t)); // check
 
-            monoListMoveNextToFront(LIRS->full_list, prev); 
+            monoListMoveNextToFront(LIRS->full_list, prev);
 #endif
             // what if that was the last LIR...
             uintptr_t end = (uintptr_t)monoListBack(LIRS->full_list);
-            if(!lirsCacheIsLIR(end))
+            if (!lirsCacheIsLIR(end))
                 lirsCacheStackPrune(LIRS);
-            return CACHE_POLICY_NO_REPLACE;
         }
         else { // HIR
             lirsCacheToggleStatus(node_prev_ptr);
@@ -190,20 +207,22 @@ CachePolicyAddResult lirsCacheAddOrReplace(LIRSCache* LIRS, void const* key, voi
             uintptr_t* old_last_LIR = baseOHTFind(LIRS->full_table, old_last_LIR_data);
             lirsCacheToggleStatus(old_last_LIR);
             lirsCacheAddToHIR(LIRS, old_last_LIR_data);
-            // ...
+
             lirsCacheStackPrune(LIRS);
 
-            return CACHE_POLICY_ADD_NO_REPLACE;
-
         }
-
-        node_prev_ptr = baseOHTFind(LIRS->hir_table, key); // if non-resident
-        // шо дальше делать то
-        if (node_prev_ptr) {
-            // moveTofront of hir_list
-            lirsCacheMoveToFrontHIR(LIRS, node_prev_ptr);
-
-        }
+        return CACHE_POLICY_ADD_NO_REPLACE;
+    }
+    MonoListNode* node_prev = baseOHTFind(LIRS->hir_table, key); // if non-resident
+    // шо дальше делать то
+    if (node_prev) {
+        // moveTofront of hir_list
+        lirsCacheMoveToFrontHIR(LIRS, node_prev);
+        return CACHE_POLICY_ADD_NO_REPLACE;
+    }
+    else {
+        
+    }
 
     }   
 #if 0
