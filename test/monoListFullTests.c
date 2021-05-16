@@ -1,6 +1,6 @@
-#include "monolist.c"
-#include "unity.h"
+#include "BaseMonoList.c"
 
+#include "unity.h"
 
 
 void test_monoListAlloc() {//0
@@ -12,7 +12,7 @@ void test_monoListAlloc() {//0
 void test_monoListFree() {//0
     MonoList* l = monoListAlloc(sizeof(int));
     monoListFree(l);
-    TEST_ASSERT_NULL(l);
+    TEST_ASSERT_EMPTY(l);
 }
 
 void test_monoListFront_one() {//1
@@ -57,13 +57,13 @@ void test_monoListSize_many() {//1
     for (int i = 0; i < 5; ++i) {
         node = monoListAddToFront(l, &i);
     }
-    TEST_ASSERT_EQUAL(monoListSize(l), 4);
+    TEST_ASSERT_EQUAL_INT(monoListSize(l), 4);
     monoListFree(l);
 }
 
-void test_monoListItemSize_all() {
+void test_monoListItemSize_all() { // 1
     MonoList* l = monoListAlloc(sizeof(int));
-    TEST_ASSERT_EQUAL(monoListItemSize(l), sizeof(int));
+    TEST_ASSERT_EQUAL_INT(monoListItemSize(l), sizeof(int));
     monoListFree(l);
 }
 
@@ -71,7 +71,8 @@ void test_monoListNodeData() {//1
     MonoList* l = monoListAlloc(sizeof(int));
     int val1 = 1;
     MonoListNode* front = monolistAddToFront(&val1);
-    TEST_ASSERT_EQUAL(*monoListNodeData(front), val1);
+    int* data = monoListNodeData(front);
+    TEST_ASSERT_EQUAL_INT(*data, val1);
     monoListFree(l);
 }
 
@@ -79,7 +80,8 @@ void test_monoListConstNodeData() {//1
     MonoList* l = monoListAlloc(sizeof(int));
     int val1 = 1;
     MonoListNode* front = monolistAddToFront(&val1);
-    TEST_ASSERT_EQUAL(*monoListConstNodeData(front), val1);
+    int* data = monoListNodeData(front);
+    TEST_ASSERT_EQUAL_INT(*data, val1);
     monoListFree(l);
 }
 
