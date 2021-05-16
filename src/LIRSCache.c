@@ -136,14 +136,11 @@ void lirsCacheFree(LIRSCache* LIRS) {
 }
 /*------------------------------------------------------------------------------------------------------------------------------*/
 bool lirsCacheContains(LIRSCache const* LIRS, void const* key) {
-    uintptr_t const* const temp = baseOHTFind(LIRS->queue_table, key);
+    uintptr_t const* const value = baseOHTFind(LIRS->queue_table, key);
 
-    if (temp == NULL)
-        return false;
-    uintptr_t data = *temp;
-
-    if (isLIR(data))
+    if (value && isLIR(*value)) {
         return true;
+    }
 
     return baseOHTFind(LIRS->hir_table, key);
 }
@@ -225,6 +222,7 @@ CachePolicyAddResult lirsCacheAddOrReplace(LIRSCache* LIRS, void const* key, voi
     if (lirsCacheAddToHIR(LIRS, oldest_lir_key) == CACHE_POLICY_ADD_ERROR) {
         return CACHE_POLICY_ADD_ERROR;
     }
+    lirsCacheDeleteFromHIR(LIRS, key);
     lirsCachePopQueue(LIRS);
     lirsCachePrune(LIRS);
 
