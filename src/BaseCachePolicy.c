@@ -38,7 +38,7 @@ CacheAlgorithm getCacheAlgorithm(char const* const algorithm_str) {
 }
 
 BaseCachePolicy* baseCachePolicyAlloc(const size_t capacity, const size_t key_size, const size_t key_align, const BaseHashFunc hash_func, const BaseCompareFunc compare_func, const CacheAlgorithm algorithm) {
-    assert(capacity && key_size && key_align && hash_func && compare_func);
+    assert(capacity >= 2 && key_size && key_align && hash_func && compare_func);
 
     BaseCachePolicy* const cache_policy = calloc(1, sizeof(*cache_policy));
     if (!cache_policy) {
