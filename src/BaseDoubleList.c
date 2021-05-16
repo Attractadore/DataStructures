@@ -19,18 +19,6 @@ struct DoubleList_T {
     size_t length;
 };
 
-//typedef enum type TypeOfValue, for tests
-typedef enum type {
-    TYPE_OF_VALUE_INT,
-    TYPE_OF_VALUE_UINT,
-    TYPE_OF_VALUE_LINT,
-    TYPE_OF_VALUE_FLOAT,
-    TYPE_OF_VALUE_STRING,
-} TypeOfValue;
-
-// doubleListShowList - prints list, send as "type" const TYPE_OF_VALUE_"your type"
-void doubleListShowList(DoubleList* list, TypeOfValue type);
-
 /*------------------------------------------------------------------------------------------------------------------------------*/
 DoubleList* doubleListAlloc(size_t key_size)
 {
@@ -88,45 +76,6 @@ DoubleListNode* doubleListMoveToFront(DoubleList* list, DoubleListNode* node)
     doubleListPrepend(list, doubleListRemove(list, node));
 
     return list->start;
-}
-/*------------------------------------------------------------------------------------------------------------------------------*/
-void doubleListShowList(DoubleList* list, TypeOfValue type)
-{
-    if (list->start == NULL)
-        printf("List is empty!\n");
-    else {
-        DoubleListNode* tmp = list->start;
-        while (tmp != NULL) {
-            switch (type) {
-                case TYPE_OF_VALUE_INT: {
-                    printf("%d\n", *(int*) (tmp->data));
-                    break;
-                }
-                case TYPE_OF_VALUE_UINT: {
-                    printf("%u\n", *(unsigned int*) (tmp->data));
-                    break;
-                }
-                case TYPE_OF_VALUE_LINT: {
-                    printf("%lu\n", *(unsigned long*) (tmp->data));
-                    break;
-                }
-                case TYPE_OF_VALUE_FLOAT: {
-                    printf("%g\n", *(float*) (tmp->data));
-                    break;
-                }
-                case TYPE_OF_VALUE_STRING: {
-                    printf("%s\n", (char*) (tmp->data));
-                    break;
-                }
-                default:
-                    printf("Error type\n");
-                    break;
-            }
-            tmp = tmp->next;
-        }
-
-        printf("\n");
-    }
 }
 /*------------------------------------------------------------------------------------------------------------------------------*/
 DoubleListNode* doubleListRemove(DoubleList* list, DoubleListNode* node)
