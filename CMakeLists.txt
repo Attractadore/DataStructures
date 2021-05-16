@@ -7,8 +7,8 @@ set(CMAKE_C_STANDARD_REQUIRED TRUE)
 set(CMAKE_C_EXTENSIONS OFF)
 
 include(CTest)
-include("cmake/add_test_suite.cmake")
-add_subdirectory("modules/Unity")
+include("cmake/CMakeTemplates/AddTestSuite.cmake")
+add_subdirectory("modules")
 add_subdirectory("test")
 
 add_library(DataStructures
