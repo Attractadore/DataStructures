@@ -1,7 +1,6 @@
 // This is an internal implementation header -- use Vector.h instead
 #pragma once
 
-#include <stdbool.h>
 #include <stddef.h>
 
 typedef struct BaseVector_T BaseVector;
