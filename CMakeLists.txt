@@ -6,6 +6,11 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED TRUE)
 set(CMAKE_C_EXTENSIONS OFF)
 
+include(CTest)
+include("cmake/add_test_suite.cmake")
+add_subdirectory("modules/Unity")
+add_subdirectory("test")
+
 add_library(DataStructures
     "src/BaseOpenHashTable.c"
     "src/BaseDoubleList.c"
