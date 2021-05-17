@@ -94,7 +94,7 @@ void test_monoListConstNodeData() {//1
     monoListFree(list);
 }
 
-/*
+
 void test_monoListAddToFront_one() {// 0
     MonoList* list = monoListAlloc(sizeof(int));
     int val1 = 1;
@@ -104,8 +104,8 @@ void test_monoListAddToFront_one() {// 0
     TEST_ASSERT_EQUAL_INT(*data, val1);
     monoListFree(list);
 }
-*/
-/*
+
+
 void test_monoListAddToBack_one() {// 0
     MonoList* list = monoListAlloc(sizeof(int));
     int val2 = 2;
@@ -115,7 +115,7 @@ void test_monoListAddToBack_one() {// 0
     TEST_ASSERT_EQUAL_INT(*data, val2);
     monoListFree(list);
 }
-*/
+
 /*
 void test_monoListNodeNext_many() {// 1
     MonoList* list = monoListAlloc(sizeof(int));
