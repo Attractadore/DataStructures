@@ -74,7 +74,7 @@ void test_monoListItemSize_all() { // 1
     monoListFree(list);
 }
 
-/*
+
 void test_monoListNodeData() {//1
     MonoList* list = monoListAlloc(sizeof(int));
     int val1 = 1;
@@ -83,17 +83,17 @@ void test_monoListNodeData() {//1
     TEST_ASSERT_EQUAL_INT(*data, val1);
     monoListFree(list);
 }
-*/
-/*
+
+
 void test_monoListConstNodeData() {//1
     MonoList* list = monoListAlloc(sizeof(int));
     int val1 = 1;
     MonoListNode* front = monoListAddToFront(list, &val1);
-    int* data = monoListNodeData(front);
+    const int* data = monoListConstNodeData(front);
     TEST_ASSERT_EQUAL_INT(*data, val1);
     monoListFree(list);
 }
-*/
+
 /*
 void test_monoListAddToFront_one() {// 0
     MonoList* list = monoListAlloc(sizeof(int));
