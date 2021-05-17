@@ -1,3 +1,5 @@
+//functions for single list (also known as monolist)
+
 #include "BaseMonoList.h"
 
 #include <assert.h>
