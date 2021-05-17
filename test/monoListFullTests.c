@@ -148,7 +148,7 @@ void test_monoListDeleteNext_many() {// 2
 
 
 
-void test_monoListRemoveNext_many() {// 2 ??????????????????Trouble
+void test_monoListRemoveNext_many() {// 2 
     MonoList* list = monoListAlloc(sizeof(int));
     MonoListNode* front;
     for (int i = 1; i < 4; i++)
@@ -158,6 +158,7 @@ void test_monoListRemoveNext_many() {// 2 ??????????????????Trouble
     MonoListNode* temp = monoListRemoveNext(list, front);
     TEST_ASSERT_EQUAL_PTR(next, temp);
     TEST_ASSERT_EQUAL_PTR(next_next, monoListNodeNext(front));
+    TEST_ASSERT_NULL(monoListNodeNext(temp));
     monoListFree(list);
     free(temp);
 }
@@ -206,8 +207,6 @@ void test_monoListMoveNextToBack_many() { // 4
     back = monoListBack(list);
     int* data = monoListNodeData(back);
     TEST_ASSERT_EQUAL_INT(*data, val2);
-    // TEST_ASSERT_PTR_NOT_EQUAL(comp, front);
-    // TEST_ASSERT_PTR_NOT_EQUAL(comp, back);
     TEST_ASSERT_EQUAL_PTR(comp1, back);
     monoListFree(list);
 }
