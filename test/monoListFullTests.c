@@ -7,13 +7,13 @@ void test_monoListAlloc() { // 0
     TEST_ASSERT_NOT_NULL(list);
     monoListFree(list);
 }
-/*
+
 void test_monoListFree() { // 0
     MonoList* list = monoListAlloc(sizeof(int));
     monoListFree(list);
     TEST_ASSERT_EMPTY(list);
 }
-*/
+
 
 void test_monoListFront_one() {//1
     MonoList* list = monoListAlloc(sizeof(int));
@@ -163,7 +163,8 @@ void test_monoListRemoveNext_many() {// 2 ??????????????????
     MonoListNode* next = monoListNodeNext(front);
     MonoListNode* next_next = monoListNodeNext(next);
     MonoListNode* temp = monoListRemoveNext(list, front);
-    TEST_ASSERT_EQUAL_PTR(next, temp);
+    //TEST_ASSERT_EQUAL_PTR(next, temp);
+    TEST_ASSERT_NULL_PTR(next);
     TEST_ASSERT_EQUAL_PTR(next_next, monoListNodeNext(front));
     monoListFree(list);
 }
