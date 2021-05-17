@@ -20,7 +20,8 @@ MonoListNode *monoListAddToBack(MonoList *ml, void const *value);
 MonoListNode *monoListPopBack(MonoList *ml);
 // removes the node from the front and deletes it, returns list->start
 MonoListNode *monoListPopFront(MonoList *ml);
-// removes the next node and puts it to the front as a start, returns list->start
+// removes the next node and puts it to the front as a start, returns
+// list->start
 MonoListNode *monoListMoveNextToFront(MonoList *ml, MonoListNode *prenode);
 // removes the next node and puts it to the back as an end, returns list->end
 MonoListNode *monoListMoveNextToBack(MonoList *ml, MonoListNode *prenode);

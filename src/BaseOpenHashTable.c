@@ -79,7 +79,7 @@ static size_t baseOHTFindInUseIdx(BaseOHT *const table, void const *const key) {
       return idx;
     }
     if (current_state == OPEN_HASH_TABLE_EMPTY) {
-        break;
+      break;
     }
   }
 

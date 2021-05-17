@@ -1,4 +1,4 @@
-/* 
+/*
  * This describes a binary max heap
  */
 
