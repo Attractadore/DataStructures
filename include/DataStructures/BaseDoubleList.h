@@ -1,3 +1,4 @@
+// Functions for data structure DoubleList
 #pragma once
 
 #include <stddef.h>
