@@ -155,7 +155,7 @@ bool lirsCacheContains(LIRSCache const *LIRS, void const *key) {
 
   return baseOHTFind(LIRS->hir_table, key);
 }
-
+/*------------------------------------------------------------------------------------------------------------------------------*/
 static void lirsCacheMoveToFront(uintptr_t *value, BaseOHT *table,
                                  MonoList *list) {
   MonoListNode *prev = getPointer(*value);
@@ -171,7 +171,6 @@ static void lirsCacheMoveToFront(uintptr_t *value, BaseOHT *table,
   setPointer(value, newest);
   monoListMoveNextToBack(list, prev);
 }
-
 /*------------------------------------------------------------------------------------------------------------------------------*/
 static void lirsCachePrune(LIRSCache *LIRS) {
   while (true) {
@@ -249,7 +248,7 @@ CachePolicyAddResult lirsCacheAddOrReplace(LIRSCache *LIRS, void const *key,
 
   return res;
 }
-
+/*------------------------------------------------------------------------------------------------------------------------------*/
 static void lirsCacheDeleteFrom(void const *key, BaseOHT *table,
                                 MonoList *list) {
   uintptr_t *value = baseOHTFind(table, key);
@@ -260,7 +259,7 @@ static void lirsCacheDeleteFrom(void const *key, BaseOHT *table,
   baseOHTDelete(table, key);
   monoListDeleteNext(list, prev);
 }
-
+/*------------------------------------------------------------------------------------------------------------------------------*/
 static void lirsCacheUpdateNextNext(MonoListNode *prev, BaseOHT *table) {
   MonoListNode *cur = monoListNodeNext(prev);
   assert(cur);
@@ -271,7 +270,7 @@ static void lirsCacheUpdateNextNext(MonoListNode *prev, BaseOHT *table) {
     setPointer(next_value, prev);
   }
 }
-
+/*------------------------------------------------------------------------------------------------------------------------------*/
 static CachePolicyAddResult lirsCacheAddTo(void const *key, BaseOHT *table,
                                            MonoList *list) {
   MonoListNode *newest = lirsCacheNewest(list);
@@ -288,7 +287,6 @@ static CachePolicyAddResult lirsCacheAddTo(void const *key, BaseOHT *table,
 
   return CACHE_POLICY_ADD_NO_REPLACE;
 }
-
 /*------------------------------------------------------------------------------------------------------------------------------*/
 static CachePolicyAddResult lirsCacheAddAsLIR(LIRSCache *LIRS,
                                               void const *key) {
