@@ -129,7 +129,7 @@ void test_monoListNodeNext_many() {// 1
     monoListFree(list);
 }
 
-/*
+
 void test_monoListPopFront_one() { // 1
     MonoList* list = monoListAlloc(sizeof(int));
     int val1 = 1;
@@ -138,7 +138,7 @@ void test_monoListPopFront_one() { // 1
     TEST_ASSERT_NULL(front);
     monoListFree(list);
 }
-*/
+
 /*
 void test_monoListDeleteNext_many() {// 2
     MonoList* list = monoListAlloc(sizeof(int));
@@ -167,7 +167,7 @@ void test_monoListRemoveNext_many() {// 2
     monoListFree(list);
 }
 */
-/*
+
 void test_monoListPopBack_two() {// 2
     MonoList* list = monoListAlloc(sizeof(int));
     int val1 = 1;
@@ -178,7 +178,7 @@ void test_monoListPopBack_two() {// 2
     TEST_ASSERT_EQUAL_PTR(back, front);
     monoListFree(list);
 }
-*/
+
 /*
 
 void test_monoListMoveNextToFront_two() {// 3
