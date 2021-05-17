@@ -14,7 +14,7 @@ void test_monoListFree() { // 0
     TEST_ASSERT_EMPTY(list);
 }
 */
-    void test_monoListFront_one() {//1
+void test_monoListFront_one() {//1
     MonoList* list = monoListAlloc(sizeof(int));
     int val1 = 1;
     MonoListNode* front = monoListAddToFront(list, &val1);
@@ -22,7 +22,7 @@ void test_monoListFree() { // 0
     TEST_ASSERT_EQUAL_PTR(front, node);
     monoListFree(list);
 }
-
+/*
 void test_monoListConstFront_one() {//1
     MonoList* list = monoListAlloc(sizeof(int));
     int val1 = 1;
@@ -31,7 +31,7 @@ void test_monoListConstFront_one() {//1
     TEST_ASSERT_EQUAL_PTR(front, node);
     monoListFree(list);
 }
-
+*/
 void test_monoListBack_one() {//1
     MonoList* list = monoListAlloc(sizeof(int));
     int val1 = 1;
@@ -40,7 +40,7 @@ void test_monoListBack_one() {//1
     TEST_ASSERT_EQUAL_PTR(front, node);
     monoListFree(list);
 }
-
+/*
 void test_monoListConstBack_one() {//1
     MonoList* list = monoListAlloc(sizeof(int));
     int val1 = 1;
@@ -49,11 +49,11 @@ void test_monoListConstBack_one() {//1
     TEST_ASSERT_EQUAL_PTR(front, node);
     monoListFree(list);
 }
-
-void test_monoListSize_many() {//1
+*/
+void test_monoListSize_many() {//1      ....
     MonoList* list = monoListAlloc(sizeof(int));
     MonoListNode* node;
-    for (int i = 0; i < 5; ++i) {
+    for (int i = 0; i < 5; i++) {
         node = monoListAddToFront(list, &i);
     }
     TEST_ASSERT_EQUAL_INT(monoListSize(list), 4);
@@ -65,7 +65,7 @@ void test_monoListItemSize_all() { // 1
     TEST_ASSERT_EQUAL_INT(monoListItemSize(list), sizeof(int));
     monoListFree(list);
 }
-
+/*
 void test_monoListNodeData() {//1
     MonoList* list = monoListAlloc(sizeof(int));
     int val1 = 1;
@@ -74,7 +74,7 @@ void test_monoListNodeData() {//1
     TEST_ASSERT_EQUAL_INT(*data, val1);
     monoListFree(list);
 }
-
+*/
 void test_monoListConstNodeData() {//1
     MonoList* list = monoListAlloc(sizeof(int));
     int val1 = 1;
