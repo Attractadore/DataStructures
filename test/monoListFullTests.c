@@ -116,7 +116,7 @@ void test_monoListAddToBack_one() {// 0
     monoListFree(list);
 }
 
-/*
+
 void test_monoListNodeNext_many() {// 1
     MonoList* list = monoListAlloc(sizeof(int));
     MonoListNode* front;
@@ -128,7 +128,7 @@ void test_monoListNodeNext_many() {// 1
     TEST_ASSERT_EQUAL_PTR(next, back);
     monoListFree(list);
 }
-*/
+
 /*
 void test_monoListPopFront_one() { // 1
     MonoList* list = monoListAlloc(sizeof(int));
