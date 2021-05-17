@@ -21,7 +21,7 @@ struct BaseOHT_T {
 };
 
 const size_t OPEN_HASH_TABLE_BASE_CAPACITY = 32;
-const double OPEN_HASH_TABLE_MAX_LOAD_FACTOR = 0.7;
+const double OPEN_HASH_TABLE_MAX_LOAD_FACTOR = 0.5;
 const double OPEN_HASH_TABLE_MIN_LOAD_FACTOR = 0.1;
 
 static unsigned char *baseOHTKeyPointer(BaseOHT *const table,
@@ -70,13 +70,16 @@ static size_t baseOHTFindInUseIdx(BaseOHT *const table, void const *const key) {
 
   const uint64_t hash = table->hash_func(key);
 
-  for (size_t i = 0; i < table->size + 1; i++) {
+  for (size_t i = 0; i < table->capacity; i++) {
     const size_t idx = baseOHTIdx(table, hash, i);
     const BaseOHTState current_state = baseOHTGetFlag(table, idx);
     void const *const current_key_ptr = baseOHTKeyPointer(table, idx);
     if (current_state == OPEN_HASH_TABLE_IN_USE &&
         table->compare_func(current_key_ptr, key)) {
       return idx;
+    }
+    if (current_state == OPEN_HASH_TABLE_EMPTY) {
+        break;
     }
   }
 
@@ -307,10 +310,6 @@ void baseOHTDelete(BaseOHT *const table, void const *const key) {
 
   baseOHTSetFlag(table, idx, OPEN_HASH_TABLE_DELETED);
   table->size--;
-
-  if (table->size < table->capacity * OPEN_HASH_TABLE_MIN_LOAD_FACTOR) {
-    baseOHTResize(table, table->capacity / 2);
-  }
 }
 
 bool baseOHTIsEmpty(BaseOHT const *const table) {
