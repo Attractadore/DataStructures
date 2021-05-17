@@ -21,11 +21,11 @@ BaseMonoList.c - функции для односвязного списка, к
 
 BaseOpenHashTable.c - функции хэш-таблицы;
 
-BaseVector.c - 
+BaseVector.c - контейнер для данных;
 
-LIRSCache.c - алгоритм LIRS
+LIRSCache.c - алгоритм LIRS;
 
-LRUCache.c - алгоритм LRU
+LRUCache.c - алгоритм LRU.
 
 В папке test хранятся тесты для наших функций.
 
