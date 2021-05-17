@@ -1,5 +1,6 @@
 // MonoList tests
 #include <stdlib.h>
+#include <stdio.h>
 #include "BaseMonoList.c"
 
 //typedef enum type TypeOfValue, for tests
@@ -57,6 +58,7 @@ void monoListShowList(MonoList* list, TypeOfValue type)
 int main() {
     char* b = "qwertyuiopasdfghjkl";
     MonoList* list = monoListAlloc(sizeof(b));
+    MonoListNode* front;
     char* tmp = calloc(sizeof(b), sizeof(char));
     for (int i = 2; i < 8; i++) {
         int j = i;
@@ -65,9 +67,14 @@ int main() {
             j--;
         }
         tmp[i] = '\0';
-        monoListAddToFront(list, (const void*) (tmp));
+        front = monoListAddToFront(list, (const void*) (tmp));
     }
     monoListShowList(list, TYPE_OF_VALUE_STRING);
+
+    MonoListNode* next = monoListNodeNext(front);
+    MonoListNode* next_next = monoListNodeNext(next);
+    MonoListNode* temp = monoListRemoveNext(list, front);
+
     MonoListNode* node = NULL;
     for (int i = 18; i > 15; i--) {
         monoListPopBack(list);
