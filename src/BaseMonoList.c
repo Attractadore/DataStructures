@@ -1,5 +1,3 @@
-
-
 #include "BaseMonoList.h"
 
 #include <assert.h>
