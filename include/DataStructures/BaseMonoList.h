@@ -1,3 +1,4 @@
+//functions for single list (also known as monolist)
 #pragma once
 
 #include <stddef.h>
