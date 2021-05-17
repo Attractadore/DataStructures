@@ -5,19 +5,26 @@
 
 Здесь мы реализуем наш любимый алгоритм кеширования LIRS
 
-Вот презентация про LIRS: /ссылка/
+Вот презентация про LIRS: https://github.com/Attractadore/DataStructures/blob/main/LIRS%20Cache%20Algorithm.pdf
 
 Дата создания - май 2021
 
 Вот основные файлы нашего репозитория:
 
 BaseCachePolicy.c - 
+
 BaseDoubleList.c - функции для двусвязного списка. Он используется в реализации LRU
+
 BaseMonoList.c - функции для односвязного списка - для LIRS
+
 BaseOpenHashTable.c - функции хэш-таблицы
+
 BaseVector.c -
+
 LIRSCache.c - алгоритм LIRS
+
 LRUCache.c - алгоритм LRU
+
 папка test хранит тесты функций.
 
 /.../
