@@ -5,7 +5,7 @@ We need any README
 
 Как мы писали проект, выдержки из рабочей переписки:
 
-![](https://github.com/Attractadore/DataStructures/blob/main/memes/if_I_knew.PNG)
+![](https://github.com/Attractadore/DataStructures/blob/main/memes/faces.PNG)
 
 "Аналогии это кринж"
 
