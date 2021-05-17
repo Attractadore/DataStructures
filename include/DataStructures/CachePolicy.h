@@ -1,3 +1,7 @@
+/*
+ * This describes a common interface to all other cache replacement algorithms
+ */
+
 // CACHE_POLICY_TYPE defines the type of the key you want to use in a
 // CachePolicy. CACHE_POLICY_TYPE_NAME defines the name suffix of a CachePolicy.
 // If CACHE_POLICY_TYPE_NAME = Int,

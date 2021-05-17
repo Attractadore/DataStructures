@@ -1,3 +1,7 @@
+/* 
+ * This describes a binary max heap
+ */
+
 // BIN_HEAP_TYPE defines the type of data you want to store in a BinHeap.
 // BIN_HEAP_TYPE_NAME defines the name suffix of a BinHeap.
 // If BIN_HEAP_TYPE_NAME = Int,

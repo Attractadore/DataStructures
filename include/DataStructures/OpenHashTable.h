@@ -1,3 +1,7 @@
+/*
+ * This describes a hash table based on linear probing
+ */
+
 // OHT_KEY_TYPE and OHT_VALUE_TYPE define the type of the key-value pair of a
 // hash table. OHT_KEY_TYPE_NAME and OHT_VALUE_TYPE_NAME define the name suffix
 // of a hash table. If OHT_KEY_TYPE_NAME = Str and OHT_VALUE_TYPE_NAME = Int,

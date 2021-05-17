@@ -1,4 +1,6 @@
-// LIRSCache.h
+/*
+ * This describes the LIRS cache replacement algorithm
+ */
 
 #pragma once
 

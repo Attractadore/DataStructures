@@ -1,3 +1,7 @@
+/*
+ * This describes a singly linked list
+ */
+
 #pragma once
 
 #include <stddef.h>

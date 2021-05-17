@@ -1,3 +1,7 @@
+/*
+ * This describes a doubly-linked list
+ */
+
 #pragma once
 
 #include <stddef.h>

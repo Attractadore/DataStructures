@@ -1,3 +1,7 @@
+/*
+ * This describes the LRU cache replacement algorithm
+ */
+
 #pragma once
 
 #include "BaseFunc.h"

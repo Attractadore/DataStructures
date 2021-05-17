@@ -1,3 +1,7 @@
+/*
+ * This describes a cache policy that does no caching
+ */
+
 #pragma once
 
 #include "CachePolicyAddResult.h"
