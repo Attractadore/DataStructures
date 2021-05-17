@@ -61,7 +61,8 @@ void test_monoListSize_many() {//1      ....
     for (int i = 0; i < 5; i++) {
         node = monoListAddToFront(list, &i);
     }
-    TEST_ASSERT_EQUAL_INT(monoListSize(list), 4);
+    int size = monoListSize(list);
+    TEST_ASSERT_EQUAL_INT(size, 5);
     monoListFree(list);
 }
 
