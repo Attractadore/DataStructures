@@ -13,6 +13,7 @@ add_subdirectory("test")
 
 add_library(DataStructures
     "src/BaseOpenHashTable.c"
+    "src/BaseChainHashTable.c"
     "src/BaseDoubleList.c"
     "src/BaseMonoList.c"
     "src/BaseVector.c"
@@ -40,6 +41,7 @@ install(
     FILES
     "include/DataStructures/BaseFunc.h"
     "include/DataStructures/BaseOpenHashTable.h"
+    "include/DataStructures/BaseChainHashTable.h"
     "include/DataStructures/OpenHashTable.h"
     "include/DataStructures/BaseVector.h"
     "include/DataStructures/Vector.h"
