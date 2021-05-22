@@ -1,13 +1,13 @@
 #include "LRUCache.h"
+#include "BaseChainHashTable.h"
 #include "BaseDoubleList.h"
-#include "BaseOpenHashTable.h"
 
 #include <stdalign.h>
 #include <stdlib.h>
 #include <string.h>
 
 struct LRUCache_T {
-  BaseOHT *table;
+  BaseCHT *table;
   DoubleList *list;
   size_t capacity;
 };
@@ -21,7 +21,7 @@ LRUCache *lruCacheAlloc(size_t capacity, size_t element_size,
 
   LRU->capacity = capacity;
   LRU->table =
-      baseOHTInit(element_size, element_align, sizeof(DoubleListNode *),
+      baseCHTInit(element_size, element_align, sizeof(DoubleListNode *),
                   alignof(DoubleListNode *), hash_func, compare_func);
   if (!LRU->table) {
     lruCacheFree(LRU);
@@ -36,12 +36,12 @@ LRUCache *lruCacheAlloc(size_t capacity, size_t element_size,
 }
 /*------------------------------------------------------------------------------------------------------------------------------*/
 bool lruCacheContains(LRUCache const *LRU, void const *key) {
-  return baseOHTFind(LRU->table, key);
+  return baseCHTFind(LRU->table, key);
 }
 /*------------------------------------------------------------------------------------------------------------------------------*/
 CachePolicyAddResult lruCacheAddorReplace(LRUCache *LRU, void const *key,
                                           void *replace) {
-  DoubleListNode *const *const node_ptr = baseOHTFind(LRU->table, key);
+  DoubleListNode *const *const node_ptr = baseCHTFind(LRU->table, key);
   if (node_ptr) {
     doubleListMoveToFront(LRU->list, *node_ptr);
     return CACHE_POLICY_ADD_NO_REPLACE;
@@ -51,7 +51,7 @@ CachePolicyAddResult lruCacheAddorReplace(LRUCache *LRU, void const *key,
     DoubleListNode const *old_end = doubleListConstBack(LRU->list);
     void const *old_data = doubleListNodeConstData(old_end);
     memcpy(replace, old_data, doubleListItemSize(LRU->list));
-    baseOHTDelete(LRU->table, old_data);
+    baseCHTDelete(LRU->table, old_data);
 
     doubleListPopBack(LRU->list);
 
@@ -71,7 +71,7 @@ CachePolicyAddResult lruCacheAdd(LRUCache *LRU, void const *key) {
     return CACHE_POLICY_ADD_ERROR;
   }
 
-  if (!baseOHTInsert(LRU->table, key, &front)) {
+  if (!baseCHTInsert(LRU->table, key, &front)) {
     doubleListPopFront(LRU->list);
     return CACHE_POLICY_ADD_ERROR;
   }
@@ -81,7 +81,7 @@ CachePolicyAddResult lruCacheAdd(LRUCache *LRU, void const *key) {
 /*------------------------------------------------------------------------------------------------------------------------------*/
 void lruCacheFree(LRUCache *LRU) {
   if (LRU) {
-    baseOHTFree(LRU->table);
+    baseCHTFree(LRU->table);
     doubleListFree(LRU->list);
 
     free(LRU);

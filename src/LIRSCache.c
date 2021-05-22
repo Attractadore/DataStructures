@@ -1,6 +1,6 @@
 #include "LIRSCache.h"
+#include "BaseChainHashTable.h"
 #include "BaseMonoList.h"
-#include "BaseOpenHashTable.h"
 
 #include <assert.h>
 #include <stdalign.h>
@@ -9,10 +9,10 @@
 
 struct LIRSCache_T {
   MonoList *queue_list;
-  BaseOHT *queue_table;
+  BaseCHT *queue_table;
 
   MonoList *hir_list;
-  BaseOHT *hir_table;
+  BaseCHT *hir_table;
 
   size_t LIR_capacity;
   size_t HIR_capacity;
@@ -48,7 +48,7 @@ static MonoListNode *lirsCacheHIROldest(LIRSCache *LIRS) {
 }
 
 static CachePolicyAddResult lirsCacheAddAsLIR(LIRSCache *LIRS, void const *key);
-static CachePolicyAddResult lirsCacheAddTo(void const *key, BaseOHT *table,
+static CachePolicyAddResult lirsCacheAddTo(void const *key, BaseCHT *table,
                                            MonoList *list);
 static CachePolicyAddResult lirsCacheAddToQueue(LIRSCache *LIRS,
                                                 void const *key) {
@@ -59,7 +59,7 @@ static CachePolicyAddResult lirsCacheAddToHIR(LIRSCache *LIRS,
   return lirsCacheAddTo(key, LIRS->hir_table, LIRS->hir_list);
 }
 
-static void lirsCacheDeleteFrom(void const *key, BaseOHT *table,
+static void lirsCacheDeleteFrom(void const *key, BaseCHT *table,
                                 MonoList *list);
 static void lirsCacheDeleteFromQueue(LIRSCache *LIRS, void const *key) {
   lirsCacheDeleteFrom(key, LIRS->queue_table, LIRS->queue_list);
@@ -76,7 +76,7 @@ static void lirsCachePopHIR(LIRSCache *LIRS) {
   lirsCacheDeleteFromHIR(LIRS, monoListConstNodeData(lirsCacheHIROldest(LIRS)));
 }
 
-static void lirsCacheMoveToFront(uintptr_t *value, BaseOHT *table,
+static void lirsCacheMoveToFront(uintptr_t *value, BaseCHT *table,
                                  MonoList *list);
 static void lirsCacheMoveToFrontQueue(LIRSCache *LIRS, uintptr_t *prev_ptr) {
   lirsCacheMoveToFront(prev_ptr, LIRS->queue_table, LIRS->queue_list);
@@ -84,7 +84,7 @@ static void lirsCacheMoveToFrontQueue(LIRSCache *LIRS, uintptr_t *prev_ptr) {
 static void lirsCacheMoveToFrontHIR(LIRSCache *LIRS, MonoListNode **value) {
   lirsCacheMoveToFront((uintptr_t *)value, LIRS->hir_table, LIRS->hir_list);
 }
-static void lirsCacheUpdateNextNext(MonoListNode *prev, BaseOHT *table);
+static void lirsCacheUpdateNextNext(MonoListNode *prev, BaseCHT *table);
 
 /*------------------------------------------------------------------------------------------------------------------------------*/
 LIRSCache *lirsCacheAlloc(size_t capacity, size_t element_size,
@@ -102,11 +102,11 @@ LIRSCache *lirsCacheAlloc(size_t capacity, size_t element_size,
   LIRS->HIR_capacity = capacity - LIRS->LIR_capacity;
 
   LIRS->queue_table =
-      baseOHTInit(element_size, element_align, sizeof(uintptr_t),
+      baseCHTInit(element_size, element_align, sizeof(uintptr_t),
                   alignof(uintptr_t), hash_func, compare_func);
   if (LIRS->queue_table) {
     LIRS->hir_table =
-        baseOHTInit(element_size, element_align, sizeof(MonoListNode *),
+        baseCHTInit(element_size, element_align, sizeof(MonoListNode *),
                     alignof(MonoListNode *), hash_func, compare_func);
     if (LIRS->hir_table) {
       LIRS->queue_list = monoListAlloc(element_size);
@@ -138,8 +138,8 @@ LIRSCache *lirsCacheAlloc(size_t capacity, size_t element_size,
 /*------------------------------------------------------------------------------------------------------------------------------*/
 void lirsCacheFree(LIRSCache *LIRS) {
   if (LIRS) {
-    baseOHTFree(LIRS->queue_table);
-    baseOHTFree(LIRS->hir_table);
+    baseCHTFree(LIRS->queue_table);
+    baseCHTFree(LIRS->hir_table);
     monoListFree(LIRS->queue_list);
     monoListFree(LIRS->hir_list);
     free(LIRS);
@@ -147,16 +147,16 @@ void lirsCacheFree(LIRSCache *LIRS) {
 }
 /*------------------------------------------------------------------------------------------------------------------------------*/
 bool lirsCacheContains(LIRSCache const *LIRS, void const *key) {
-  uintptr_t const *const value = baseOHTFind(LIRS->queue_table, key);
+  uintptr_t const *const value = baseCHTFind(LIRS->queue_table, key);
 
   if (value && isLIR(*value)) {
     return true;
   }
 
-  return baseOHTFind(LIRS->hir_table, key);
+  return baseCHTFind(LIRS->hir_table, key);
 }
 /*------------------------------------------------------------------------------------------------------------------------------*/
-static void lirsCacheMoveToFront(uintptr_t *value, BaseOHT *table,
+static void lirsCacheMoveToFront(uintptr_t *value, BaseCHT *table,
                                  MonoList *list) {
   MonoListNode *prev = getPointer(*value);
   MonoListNode *cur = monoListNodeNext(prev);
@@ -177,7 +177,7 @@ static void lirsCachePrune(LIRSCache *LIRS) {
     MonoListNode *const end = lirsCacheQueueOldest(LIRS);
     assert(end);
     uintptr_t *end_data =
-        baseOHTFind(LIRS->queue_table, monoListConstNodeData(end));
+        baseCHTFind(LIRS->queue_table, monoListConstNodeData(end));
     if (isLIR(*end_data))
       break;
     lirsCacheDeleteFromQueue(LIRS, monoListConstNodeData(end));
@@ -201,13 +201,13 @@ CachePolicyAddResult lirsCacheAddOrReplace(LIRSCache *LIRS, void const *key,
   //    a HIR block, and prune the queue. If it is not present in the queue, and
   //    it to the queue.
 
-  uintptr_t *queue_value = baseOHTFind(LIRS->queue_table, key);
+  uintptr_t *queue_value = baseCHTFind(LIRS->queue_table, key);
   if (queue_value && isLIR(*queue_value)) {
     lirsCacheMoveToFrontQueue(LIRS, queue_value);
     lirsCachePrune(LIRS);
     return CACHE_POLICY_ADD_NO_REPLACE;
   }
-  MonoListNode **hir_value = baseOHTFind(LIRS->hir_table, key);
+  MonoListNode **hir_value = baseCHTFind(LIRS->hir_table, key);
   CachePolicyAddResult res = CACHE_POLICY_ADD_NO_REPLACE;
   if (!hir_value) {
     if (monoListSize(LIRS->queue_list) - 1 < LIRS->LIR_capacity) {
@@ -222,7 +222,7 @@ CachePolicyAddResult lirsCacheAddOrReplace(LIRSCache *LIRS, void const *key,
     if (lirsCacheAddToHIR(LIRS, key) == CACHE_POLICY_ADD_ERROR) {
       return CACHE_POLICY_ADD_ERROR;
     }
-    hir_value = baseOHTFind(LIRS->hir_table, key);
+    hir_value = baseCHTFind(LIRS->hir_table, key);
     assert(hir_value);
   } else {
     lirsCacheMoveToFrontHIR(LIRS, hir_value);
@@ -249,39 +249,39 @@ CachePolicyAddResult lirsCacheAddOrReplace(LIRSCache *LIRS, void const *key,
   return res;
 }
 /*------------------------------------------------------------------------------------------------------------------------------*/
-static void lirsCacheDeleteFrom(void const *key, BaseOHT *table,
+static void lirsCacheDeleteFrom(void const *key, BaseCHT *table,
                                 MonoList *list) {
-  uintptr_t *value = baseOHTFind(table, key);
+  uintptr_t *value = baseCHTFind(table, key);
   assert(value);
   MonoListNode *prev = getPointer(*value);
 
   lirsCacheUpdateNextNext(prev, table);
-  baseOHTDelete(table, key);
+  baseCHTDelete(table, key);
   monoListDeleteNext(list, prev);
 }
 /*------------------------------------------------------------------------------------------------------------------------------*/
-static void lirsCacheUpdateNextNext(MonoListNode *prev, BaseOHT *table) {
+static void lirsCacheUpdateNextNext(MonoListNode *prev, BaseCHT *table) {
   MonoListNode *cur = monoListNodeNext(prev);
   assert(cur);
   MonoListNode *next = monoListNodeNext(cur);
   if (next) {
-    uintptr_t *next_value = baseOHTFind(table, monoListConstNodeData(next));
+    uintptr_t *next_value = baseCHTFind(table, monoListConstNodeData(next));
     assert(next_value);
     setPointer(next_value, prev);
   }
 }
 /*------------------------------------------------------------------------------------------------------------------------------*/
-static CachePolicyAddResult lirsCacheAddTo(void const *key, BaseOHT *table,
+static CachePolicyAddResult lirsCacheAddTo(void const *key, BaseCHT *table,
                                            MonoList *list) {
   MonoListNode *newest = lirsCacheNewest(list);
-  uintptr_t *value = baseOHTInsert(table, key, &newest);
+  uintptr_t *value = baseCHTInsert(table, key, &newest);
   if (!value) {
     return CACHE_POLICY_ADD_ERROR;
   }
 
   MonoListNode *new = monoListAddToBack(list, key);
   if (!new) {
-    baseOHTDelete(table, key);
+    baseCHTDelete(table, key);
     return CACHE_POLICY_ADD_ERROR;
   }
 
@@ -292,7 +292,7 @@ static CachePolicyAddResult lirsCacheAddAsLIR(LIRSCache *LIRS,
                                               void const *key) {
   CachePolicyAddResult res = lirsCacheAddToQueue(LIRS, key);
   if (res != CACHE_POLICY_ADD_ERROR) {
-    uintptr_t *value = baseOHTFind(LIRS->queue_table, key);
+    uintptr_t *value = baseCHTFind(LIRS->queue_table, key);
     assert(value);
     setToLIR(value);
   }
