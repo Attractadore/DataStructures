@@ -43,6 +43,7 @@ install(
     "include/DataStructures/BaseOpenHashTable.h"
     "include/DataStructures/BaseChainHashTable.h"
     "include/DataStructures/OpenHashTable.h"
+    "include/DataStructures/ChainHashTable.h"
     "include/DataStructures/BaseVector.h"
     "include/DataStructures/Vector.h"
     "include/DataStructures/BaseBinHeap.h"

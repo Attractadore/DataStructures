@@ -1,3 +1,4 @@
+// This is an internal implementation header -- use ChainHashTable.h instead
 #pragma once
 
 #include "BaseFunc.h"
