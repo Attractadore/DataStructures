@@ -297,6 +297,12 @@ void baseCHTDelete(BaseCHT *const table, void const *const key) {
   baseCHTDeleteInChain(table, found_prev);
 }
 
+bool baseCHTIsEmpty(BaseCHT const *const table) {
+  assert(table);
+
+  return !table->size;
+}
+
 size_t baseCHTSize(BaseCHT const *const table) {
   assert(table);
 

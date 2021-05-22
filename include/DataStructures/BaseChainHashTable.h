@@ -17,4 +17,5 @@ void *baseCHTFind(BaseCHT *table, void const *key);
 void *baseCHTFindOrInsert(BaseCHT *table, void const *key, void const *value);
 void baseCHTDelete(BaseCHT *table, void const *key);
 
+bool baseCHTIsEmpty(BaseCHT const *table);
 size_t baseCHTSize(BaseCHT const *table);
