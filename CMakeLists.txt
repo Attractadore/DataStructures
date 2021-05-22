@@ -23,46 +23,10 @@ add_library(DataStructures
     "src/LRUCache.c"
     "src/LIRSCache.c"
 )
+
 target_include_directories(DataStructures 
     INTERFACE
-    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
-    "$<INSTALL_INTERFACE:include>"
+    "${PROJECT_SOURCE_DIR}/include"
     PRIVATE
-    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/DataStructures>"
+    "${PROJECT_SOURCE_DIR}/include/DataStructures"
 )
-
-install(
-    TARGETS DataStructures 
-    EXPORT DataStructuresTargets
-    ARCHIVE DESTINATION lib
-)
-
-install(
-    FILES
-    "include/DataStructures/BaseFunc.h"
-    "include/DataStructures/BaseOpenHashTable.h"
-    "include/DataStructures/BaseChainHashTable.h"
-    "include/DataStructures/OpenHashTable.h"
-    "include/DataStructures/ChainHashTable.h"
-    "include/DataStructures/BaseVector.h"
-    "include/DataStructures/Vector.h"
-    "include/DataStructures/BaseBinHeap.h"
-    "include/DataStructures/BinHeap.h"
-    "include/DataStructures/BaseCachePolicy.h"
-    "include/DataStructures/CachePolicyAddResult.h"
-    "include/DataStructures/CachePolicy.h"
-    "include/DataStructures/BaseDoubleList.h"
-    "include/DataStructures/BaseMonoList.h"
-    DESTINATION
-    "include/DataStructures"
-)
-
-install(
-    EXPORT DataStructuresTargets
-    FILE DataStructuresTargets.cmake
-    NAMESPACE DataStructures::
-    DESTINATION "lib/cmake/DataStructures"
-)
-
-add_library(DataStructures::DataStructures ALIAS DataStructures)
-
